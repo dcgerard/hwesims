@@ -1,0 +1,41 @@
+---
+output: github_document
+bibliography: simbib.bib
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# Reproduce the Analysis from @gerard2021double
+
+## Instructions
+
+1. Install the appropriate R packages
+
+    ```{r, eval = FALSE}
+    install.packages(c("hwep",
+                       "tidyverse",
+                       "ggthemes",
+                       "latex2exp"))
+    ```
+
+
+## Other Files
+
+- [alpha_tetra.nb](./analysis/alpha_tetra.nb) is a Mathematica
+  notebook that solves for the double reduction parameter given the
+  gamete genotype frequencies in a tetraploid population at HWE. 
+  This file was used to derive Equation (XYZ) in @gerard2021double.
+  The segregation probabilities come from Table 9 of @fisher1943inheritance.
+  
+  
+# References
+
