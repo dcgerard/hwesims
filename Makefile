@@ -14,8 +14,16 @@ rexec = R CMD BATCH --no-save --no-restore
 # AVOID EDITING ANYTHING BELOW THIS LINE
 # --------------------------------------
 
+## Plots exploring the simulation results
+simplots = ./output/sims/alphahat_dr0.pdf \
+           ./output/sims/alphahat_dr50.pdf \
+           ./output/sims/alphahat_dr100.pdf \
+           ./output/sims/qq_nind100.pdf \
+           ./output/sims/qq_nind1000.pdf
+
+
 .PHONY : all
-all : tetra
+all : tetra sims
 
 # Analyses to highlight difficulty in tetraploids
 .PHONY : tetra
@@ -30,4 +38,18 @@ tetra : ./output/tetra/iso_dr.pdf \
 ./output/tetra/s1_iterate.pdf : ./analysis/gamfreq.R
 	mkdir -p ./output/rout
 	mkdir -p ./output/tetra
+	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
+
+# Simulation study
+.PHONY : sims
+sims : $(simplots)
+
+./output/sims/simdf.csv : ./analysis/sims.R
+	mkdir -p ./output/rout
+	mkdir -p ./output/sims
+	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
+
+$(simplots) : ./analysis/sims_plots.R ./output/sims/simdf.csv
+	mkdir -p ./output/rout
+	mkdir -p ./output/sims
 	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout

@@ -21,12 +21,17 @@ knitr::opts_chunk$set(
 1. Install the appropriate R packages
 
     ```{r, eval = FALSE}
-    install.packages(c("hwep",
+    install.packages(c("devtools",
                        "tidyverse",
                        "ggthemes",
                        "latex2exp"))
+    devtools::install_github("dcgerard/hwep")
+    devtools::install_github("dcgerard/phwelike")
     ```
+    
+    The hwep package contains the new methods from @gerard2021double, while the phwelike package contains the code written by @jiang2021computational and placed in package form by me.
 
+2. Run `make` in the terminal.
 
 ## Other Files
 
@@ -36,6 +41,21 @@ knitr::opts_chunk$set(
   This file was used to derive Equation (XYZ) in @gerard2021double.
   The segregation probabilities come from Table 9 of @fisher1943inheritance.
   
-  
-# References
+## Session Information
 
+```{r, echo = FALSE, message=FALSE, warning=FALSE, results='hide'}
+lapply(c("devtools",
+         "tidyverse",
+         "ggthemes",
+         "latex2exp",
+         "hwep",
+         "phwelike"), 
+       FUN = library,
+       character.only = TRUE)
+```
+
+```{r, echo = FALSE, comment=""}
+sessionInfo()
+```
+
+# References
