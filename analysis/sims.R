@@ -2,6 +2,20 @@ library(hwep)
 library(phwelike)
 library(tidyr)
 
+# Number of threads to use for multithreaded computing. This must be
+# specified in the command-line shell; e.g., to use 8 threads, run
+# command
+#
+#  R CMD BATCH '--args nc=8' sims.R
+#
+args <- commandArgs(trailingOnly = TRUE)
+if (length(args) == 0) {
+  nc <- 1
+} else {
+  eval(parse(text = args[[1]]))
+}
+cat(nc, "\n")
+
 ## Set up simulation parameters ----
 paramdf <- expand.grid(ploidy = c(4, 6, 8),
                        nind = c(100, 1000),
@@ -57,7 +71,10 @@ for (i in seq_len(nrow(paramdf))) {
   nmat <- t(stats::rmultinom(n = nreps, size = nind, prob = freq$q))
 
   ## Fit hwep ----
+  future::plan(future::multisession, workers = nc)
   hout <- hwep::hwefit(nmat = nmat, type = "hwe")
+  future::plan(future::sequential)
+
   if (ploidy %in% c(4, 6)) {
     hout$alpha1 <- hout$alpha
     hout$alpha <- NULL
