@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[     23621,        670]
-NotebookOptionsPosition[     21297,        622]
-NotebookOutlinePosition[     21691,        638]
-CellTagsIndexPosition[     21648,        635]
+NotebookDataLength[     25447,        723]
+NotebookOptionsPosition[     22805,        670]
+NotebookOutlinePosition[     23199,        686]
+CellTagsIndexPosition[     23156,        683]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -618,6 +618,54 @@ Cell[BoxData[
     SuperscriptBox["t", "2"]}], ")"}]}]], "Output",
  CellChangeTimes->{{3.823094200112268*^9, 3.823094221393539*^9}},
  CellLabel->"Out[10]=",ExpressionUUID->"218ac285-9e43-4767-8159-453ab44c904f"]
+}, Open  ]],
+
+Cell["Simplify Update", "Text",
+ CellChangeTimes->{{3.82309425540388*^9, 
+  3.823094267438325*^9}},ExpressionUUID->"8efe10f2-75ca-4ed8-8725-\
+506e98119469"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"fq", "=", 
+  RowBox[{"Simplify", "[", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"q0", "^", "2"}], "+", 
+      RowBox[{"q0", " ", "q1"}], "+", 
+      RowBox[{
+       RowBox[{"q1", "^", "2"}], "/", "4"}]}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"q0", " ", "q1"}], "+", 
+      RowBox[{"2", "q0", " ", "q2"}], "+", 
+      RowBox[{
+       RowBox[{"q1", "^", "2"}], "/", "2"}], "+", 
+      RowBox[{"q1", " ", "q2"}]}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"q1", "^", "2"}], "/", "4"}], "+", 
+      RowBox[{"q1", " ", "q2"}], "+", 
+      RowBox[{"q2", "^", "2"}]}]}], "}"}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.8230942739092712`*^9, 3.823094353976972*^9}},
+ CellLabel->"In[12]:=",ExpressionUUID->"e92e5be1-c073-4a42-99fc-961040b0816b"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   SuperscriptBox[
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"-", "1"}], "+", "r"}], ")"}], "2"], ",", 
+   RowBox[{
+    RowBox[{"-", "2"}], " ", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"-", "1"}], "+", "r"}], ")"}], " ", "r"}], ",", 
+   SuperscriptBox["r", "2"]}], "}"}]], "Output",
+ CellChangeTimes->{{3.823094345256303*^9, 3.8230943543000717`*^9}},
+ CellLabel->"Out[12]=",ExpressionUUID->"4d50fa86-a5a8-47c2-82ae-5f59cb561652"]
 }, Open  ]]
 },
 WindowSize->{1099.2, 605.4},
@@ -671,6 +719,11 @@ Cell[19633, 574, 237, 4, 52, "Text",ExpressionUUID->"377bdff0-cdb7-4cbb-8bfc-5c2
 Cell[CellGroupData[{
 Cell[19895, 582, 864, 22, 44, "Input",ExpressionUUID->"69de92cd-75ff-4da2-919b-1292b70cb072"],
 Cell[20762, 606, 519, 13, 53, "Output",ExpressionUUID->"218ac285-9e43-4767-8159-453ab44c904f"]
+}, Open  ]],
+Cell[21296, 622, 156, 3, 52, "Text",ExpressionUUID->"8efe10f2-75ca-4ed8-8725-506e98119469"],
+Cell[CellGroupData[{
+Cell[21477, 629, 829, 22, 106, "Input",ExpressionUUID->"e92e5be1-c073-4a42-99fc-961040b0816b"],
+Cell[22309, 653, 480, 14, 70, "Output",ExpressionUUID->"4d50fa86-a5a8-47c2-82ae-5f59cb561652"]
 }, Open  ]]
 }
 ]
