@@ -72,7 +72,7 @@ for (i in seq_len(nrow(paramdf))) {
 
   ## Fit hwep ----
   future::plan(future::multisession, workers = nc)
-  hout <- hwep::hwefit(nmat = nmat, type = "hwe")
+  hout <- hwep::hwefit(nmat = nmat, type = "hwe", obj = "pearson")
   future::plan(future::sequential)
 
   if (ploidy %in% c(4, 6)) {

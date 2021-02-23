@@ -77,7 +77,7 @@ for (i in seq_along(nind_unique)) {
     mutate(dr_ratio = factor(dr_ratio)) %>%
     ggplot(aes(x = theo, y = p_hwe, color = dr_ratio)) +
     facet_grid(ploidy ~ r) +
-    geom_point() +
+    geom_line() +
     theme_bw() +
     geom_abline(slope = 1, intercept = 0, lty = 2, col = 2) +
     scale_color_colorblind() +
@@ -112,7 +112,7 @@ simdf %>%
          tot = n(),
          fpr = order / tot) %>%
   ungroup() %>%
-  filter(r > 0.05) %>%
+  # filter(r > 0.05) %>%
   rowwise() %>%
   filter(pvalue < 0.05) %>%
   mutate(ci = list(binom_ci(order, tot))) %>%
@@ -140,12 +140,12 @@ for (i in seq_along(nind_unique)) {
       theme_bw() +
       theme(strip.background = element_rect(fill = "white")) +
       scale_color_colorblind() +
-      geom_ribbon(aes(ymin = lower, ymax = upper, fill = dr_ratio),
-                  color = NA_real_,
-                  alpha = 1/6) +
-      scale_fill_colorblind() +
-      labs(color = "Double\nReduction\nRatio",
-           fill  = "Double\nReduction\nRatio") ->
+      # geom_ribbon(aes(ymin = lower, ymax = upper, fill = dr_ratio),
+      #             color = NA_real_,
+      #             alpha = 1/6) +
+      # scale_fill_colorblind() +
+      # labs(fill  = "Double\nReduction\nRatio") +
+      labs(color = "Double\nReduction\nRatio") ->
       pl
     pl
 

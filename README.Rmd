@@ -40,6 +40,9 @@ knitr::opts_chunk$set(
   gamete genotype frequencies in a tetraploid population at HWE. 
   This file was used to derive Equation (XYZ) in @gerard2021double.
   The segregation probabilities come from Table 9 of @fisher1943inheritance.
+- [diploid.nb](./analysis/diploid.nb) is a Mathematica notebook that
+  explores the $U$-statistic approach to testing for equilibrium in 
+  diploids.
   
 ## Session Information
 
