@@ -24,7 +24,7 @@ paramdf <- expand.grid(ploidy = c(4, 6, 8),
                        niter = c(1, 2, 3, Inf))
 maxploidy <- max(paramdf$ploidy)
 maxibdr <- floor(maxploidy / 4)
-nreps <- 2 ## number of replications
+nreps <- 1000 ## number of replications
 
 ## Filter out settings that are impossible for diploids ----
 paramdf <- paramdf[!(paramdf$ploidy == 2 & paramdf$dr_ratio > 0), ]
