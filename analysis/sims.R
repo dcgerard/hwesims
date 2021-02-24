@@ -24,7 +24,7 @@ paramdf <- expand.grid(ploidy = c(4, 6, 8),
                        niter = c(1, 2, 3, Inf))
 maxploidy <- max(paramdf$ploidy)
 maxibdr <- floor(maxploidy / 4)
-nreps <- 1000 ## number of replications
+nreps <- 2 ## number of replications
 
 ## Filter out settings that are impossible for diploids ----
 paramdf <- paramdf[!(paramdf$ploidy == 2 & paramdf$dr_ratio > 0), ]
@@ -72,36 +72,45 @@ for (i in seq_len(nrow(paramdf))) {
 
   ## Fit hwep ----
   future::plan(future::multisession, workers = nc)
-  hout <- hwep::hwefit(nmat = nmat, type = "hwe", obj = "pearson")
+  hout <- hwep::hwefit(nmat = nmat, type = "ustat")
   future::plan(future::sequential)
 
-  if (ploidy %in% c(4, 6)) {
-    hout$alpha1 <- hout$alpha
-    hout$alpha <- NULL
+  if(is.null(hout$alpha1)) {
+    hout$alpha1 <- NA_real_
+  }
+  if (is.null(hout$alpha2)) {
     hout$alpha2 <- NA_real_
   }
 
   hkeep <- hout[, c("alpha1",
                     "alpha2",
-                    "r",
                     "chisq_hwe",
                     "df_hwe",
-                    "p_hwe",
-                    "chisq_ndr",
-                    "df_ndr",
-                    "p_ndr")]
+                    "p_hwe")]
 
   ## No double reduction ----
   ndr_out <- hwefit(nmat = nmat,
-                    type = "nodr",
-                    overwrite = TRUE)
+                    type = "nodr")
   colnames(ndr_out) <- paste0(colnames(ndr_out), "_ndr")
 
   hkeep <- cbind(hkeep, ndr_out)
 
-  ## Fit Jiang et al (2021) ----
+  ## Fit Jiang et al (2021) and likelihood method----
   if (ploidy == 4) {
+    future::plan(future::multisession, workers = nc)
+    lout <- hwefit(nmat = nmat, type = "mle")
+    future::plan(future::sequential)
+    lkeep <- lout[, c("alpha1",
+                      "chisq_hwe",
+                      "df_hwe",
+                      "p_hwe")]
+    names(lkeep) <- paste0(names(lkeep), "_ll")
+    hkeep <- cbind(hkeep, lkeep)
+
+    future::plan(future::multisession, workers = nc)
     jout <- phwelike::main_multi(nmat = nmat)
+    future::plan(future::sequential)
+
     colnames(jout) <- paste0(colnames(jout), "_jiang")
     hkeep <- cbind(hkeep, jout)
   }
