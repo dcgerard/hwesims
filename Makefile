@@ -14,12 +14,20 @@ rexec = R CMD BATCH --no-save --no-restore
 # AVOID EDITING ANYTHING BELOW THIS LINE
 # --------------------------------------
 
-## Plots exploring the simulation results
-simplots = ./output/sims/alphahat_dr0.pdf \
-           ./output/sims/alphahat_dr50.pdf \
-           ./output/sims/alphahat_dr100.pdf \
-           ./output/sims/qq_nind100.pdf \
-           ./output/sims/qq_nind1000.pdf
+## Plots comparing double reduction estimates
+simplots_dr = ./output/sims/alphahat_dr0.pdf \
+              ./output/sims/alphahat_dr50.pdf \
+              ./output/sims/alphahat_dr100.pdf
+
+## Plots checking distributional assumptions of p-values
+simplots_qq = ./output/sims/qq_nind100.pdf \
+              ./output/sims/qq_nind1000.pdf
+
+## Plots on Type I error and power from simulations
+simplots_pw = ./output/sims/power100.pdf \
+              ./output/sims/power1000.pdf \
+              ./output/sims/t1e100.pdf \
+              ./output/sims/t1e1000.pdf
 
 .PHONY : all
 all : tetra sims
@@ -41,14 +49,24 @@ tetra : ./output/tetra/iso_dr.pdf \
 
 # Simulation study
 .PHONY : sims
-sims : $(simplots)
+sims : $(simplots_qq) $(simplots_dr) $(simplots_pw)
 
 ./output/sims/simdf.csv : ./analysis/sims.R
 	mkdir -p ./output/rout
 	mkdir -p ./output/sims
 	$(rexec) '--args nc=$(nc)' $< ./output/rout/$(basename $(notdir $<)).Rout
 
-$(simplots) : ./analysis/sims_plots.R ./output/sims/simdf.csv
+$(simplots_qq) : ./analysis/sims_plots_qq.R ./output/sims/simdf.csv
+	mkdir -p ./output/rout
+	mkdir -p ./output/sims
+	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
+
+$(simplots_dr) : ./analysis/sims_plots_dr.R ./output/sims/simdf.csv
+	mkdir -p ./output/rout
+	mkdir -p ./output/sims
+	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
+
+$(simplots_pw) : ./analysis/sims_plots_power.R ./output/sims/simdf.csv
 	mkdir -p ./output/rout
 	mkdir -p ./output/sims
 	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout

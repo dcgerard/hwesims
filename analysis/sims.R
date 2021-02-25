@@ -20,7 +20,7 @@ cat(nc, "\n")
 paramdf <- expand.grid(ploidy = c(4, 6, 8),
                        nind = c(100, 1000),
                        dr_ratio = c(0, 0.5, 1),
-                       true_r = c(0.05, 0.25, 0.5),
+                       true_r = c(0.1, 0.25, 0.5),
                        niter = c(1, 2, 3, Inf))
 maxploidy <- max(paramdf$ploidy)
 maxibdr <- floor(maxploidy / 4)
