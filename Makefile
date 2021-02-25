@@ -29,6 +29,9 @@ simplots_pw = ./output/sims/power100.pdf \
               ./output/sims/t1e100.pdf \
               ./output/sims/t1e1000.pdf
 
+## Inferred alpha plots
+simplots_in = ./output/sims/inferred_alpha.pdf
+
 .PHONY : all
 all : tetra sims
 
@@ -49,7 +52,7 @@ tetra : ./output/tetra/iso_dr.pdf \
 
 # Simulation study
 .PHONY : sims
-sims : $(simplots_qq) $(simplots_dr) $(simplots_pw)
+sims : $(simplots_qq) $(simplots_dr) $(simplots_pw) $(simplots_in)
 
 ./output/sims/simdf.csv : ./analysis/sims.R
 	mkdir -p ./output/rout
@@ -67,6 +70,11 @@ $(simplots_dr) : ./analysis/sims_plots_dr.R ./output/sims/simdf.csv
 	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
 
 $(simplots_pw) : ./analysis/sims_plots_power.R ./output/sims/simdf.csv
+	mkdir -p ./output/rout
+	mkdir -p ./output/sims
+	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
+
+$(simplots_in) : ./analysis/sims_plots_inferred.R ./output/sims/simdf.csv
 	mkdir -p ./output/rout
 	mkdir -p ./output/sims
 	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
