@@ -36,8 +36,8 @@ binom_ci <- function(x, n, clev = 0.95) {
 siglev <- 0.05 # significance level
 
 simdf %>%
-  select(ploidy, nind, dr_ratio, r = true_r, niter, ustat = p_hwe, ndr = p_hwe_ndr) %>%
-  pivot_longer(cols = c("ustat", "ndr"), names_to = "method", values_to = "pvalue") %>%
+  select(ploidy, nind, dr_ratio, r = true_r, niter, `U-stat` = p_hwe, `No DR` = p_hwe_ndr) %>%
+  pivot_longer(cols = c("U-stat", "No DR"), names_to = "method", values_to = "pvalue") %>%
   filter(!is.na(pvalue)) %>%
   mutate(reject = pvalue <= siglev) %>%
   group_by(ploidy, nind, dr_ratio, r, niter, method) %>%
@@ -56,7 +56,7 @@ nind_unique <- unique(longdf$nind)
 
 for (i in seq_along(nind_unique)) {
   longdf %>%
-    filter(nind == nind_unique[[i]], method == "ustat") %>%
+    filter(nind == nind_unique[[i]], method == "U-stat") %>%
     ggplot(aes(x = niter, y = preject, color = dr_ratio, group = dr_ratio)) +
     facet_grid(ploidy ~ r) +
     geom_point() +
@@ -67,7 +67,7 @@ for (i in seq_along(nind_unique)) {
     scale_color_colorblind() +
     ylim(0, 1) +
     ylab("Power") +
-    xlab("Number of iterations (m)") +
+    xlab("Number of generations of random mating") +
     labs(color = "Double\nReduction\nRatio") ->
     pl
 
