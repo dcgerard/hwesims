@@ -36,8 +36,8 @@ binom_ci <- function(x, n, clev = 0.95) {
 siglev <- 0.05 # significance level
 
 simdf %>%
-  select(ploidy, nind, dr_ratio, r = true_r, niter, `U-stat` = p_hwe, `No DR` = p_hwe_ndr) %>%
-  pivot_longer(cols = c("U-stat", "No DR"), names_to = "method", values_to = "pvalue") %>%
+  select(ploidy, nind, dr_ratio, r = true_r, niter, `U-stat` = p_hwe, MLE = p_hwe_ll, `No DR` = p_hwe_ndr) %>%
+  pivot_longer(cols = c("U-stat", "MLE", "No DR"), names_to = "method", values_to = "pvalue") %>%
   filter(!is.na(pvalue)) %>%
   mutate(reject = pvalue <= siglev) %>%
   group_by(ploidy, nind, dr_ratio, r, niter, method) %>%
@@ -56,8 +56,12 @@ nind_unique <- unique(longdf$nind)
 
 for (i in seq_along(nind_unique)) {
   longdf %>%
-    filter(nind == nind_unique[[i]], method == "U-stat") %>%
-    ggplot(aes(x = niter, y = preject, color = dr_ratio, group = dr_ratio)) +
+    filter(nind == nind_unique[[i]], method %in% c("U-stat", "MLE")) %>%
+    ggplot(aes(x = niter,
+               y = preject,
+               color = dr_ratio,
+               lty = method,
+               group = interaction(dr_ratio, method))) +
     facet_grid(ploidy ~ r) +
     geom_point() +
     stat_summary(fun = sum, geom = "line") +
@@ -68,7 +72,8 @@ for (i in seq_along(nind_unique)) {
     ylim(0, 1) +
     ylab("Power") +
     xlab("Number of generations of random mating") +
-    labs(color = "Double\nReduction\nRatio") ->
+    labs(color = "Double\nReduction\nRatio",
+         lty = "Method") ->
     pl
 
   ggsave(filename = paste0("./output/sims/power", nind_unique[[i]], ".pdf"),
@@ -90,8 +95,7 @@ for (i in seq_along(nind_unique)) {
     scale_color_colorblind() +
     ylab("Type I Error") +
     xlab("Double Reduction Ratio") +
-    labs(color = "Method") +
-    ylim(0, 1) ->
+    labs(color = "Method") ->
     pl
 
   ggsave(filename = paste0("./output/sims/t1e", nind_unique[[i]], ".pdf"),

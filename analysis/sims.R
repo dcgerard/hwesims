@@ -39,6 +39,7 @@ paramdf$p <- vector(mode = "list", length = nrow(paramdf))
 
 ## Run simulations ----
 for (i in seq_len(nrow(paramdf))) {
+  cat(i, "\n")
   set.seed(paramdf$seed[[i]])
   ploidy <- paramdf$ploidy[[i]]
   ibdr <- floor(ploidy / 4)
@@ -71,8 +72,9 @@ for (i in seq_len(nrow(paramdf))) {
   nmat <- t(stats::rmultinom(n = nreps, size = nind, prob = freq$q))
 
   ## Fit hwep ----
+  thresh_l <- ifelse(niter == 1, 0, 1)
   future::plan(future::multisession, workers = nc)
-  hout <- hwep::hwefit(nmat = nmat, type = "ustat")
+  hout <- hwep::hwefit(nmat = nmat, type = "ustat", thresh = thresh_l)
   future::plan(future::sequential)
 
   if(is.null(hout$alpha1)) {
@@ -95,18 +97,31 @@ for (i in seq_len(nrow(paramdf))) {
 
   hkeep <- cbind(hkeep, ndr_out)
 
-  ## Fit Jiang et al (2021) and likelihood method----
-  if (ploidy == 4) {
-    future::plan(future::multisession, workers = nc)
-    lout <- hwefit(nmat = nmat, type = "mle")
-    future::plan(future::sequential)
-    lkeep <- lout[, c("alpha1",
-                      "chisq_hwe",
-                      "df_hwe",
-                      "p_hwe")]
-    names(lkeep) <- paste0(names(lkeep), "_ll")
-    hkeep <- cbind(hkeep, lkeep)
+  ## Fit random mating ----
+  future::plan(future::multisession, workers = nc)
+  rmout <- hwefit(nmat = nmat, type = "rm")
+  future::plan(future::sequential)
 
+  rmkeep <- rmout[, c("chisq_rm",
+                      "df_rm",
+                      "p_rm")]
+
+  hkeep <- cbind(hkeep, rmkeep)
+
+  ## Fit likelihood approach ----
+  thresh_l <- ifelse(niter == 1, 0, 1)
+  future::plan(future::multisession, workers = nc)
+  lout <- hwefit(nmat = nmat, type = "mle", thresh = thresh_l)
+  future::plan(future::sequential)
+  lkeep <- lout[, c("alpha1",
+                    "chisq_hwe",
+                    "df_hwe",
+                    "p_hwe")]
+  names(lkeep) <- paste0(names(lkeep), "_ll")
+  hkeep <- cbind(hkeep, lkeep)
+
+  ## Fit Jiang et al (2021) ----
+  if (ploidy == 4) {
     future::plan(future::multisession, workers = nc)
     jout <- phwelike::main_multi(nmat = nmat)
     future::plan(future::sequential)

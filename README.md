@@ -30,10 +30,15 @@
     file was used to derive Equation (XYZ) in Gerard (2021). The
     segregation probabilities come from Table 9 of Fisher and
     Mather (1943).
+-   [diploid.nb](./analysis/diploid.nb) is a Mathematica notebook that
+    explores the *U*-statistic approach to testing for equilibrium in
+    diploids.
+-   [hex\_equi.nb](./analysis/hex_equi.nb) is a Mathematica notebook
+    that calculates gamete frequencies at equilibrium for hexaploids.
 
 ## Session Information
 
-    R version 4.0.3 (2020-10-10)
+    R version 4.0.4 (2021-02-15)
     Platform: x86_64-pc-linux-gnu (64-bit)
     Running under: Ubuntu 20.04.2 LTS
 
@@ -61,23 +66,24 @@
 
     loaded via a namespace (and not attached):
      [1] httr_1.4.2        pkgload_1.1.0     jsonlite_1.7.2    foreach_1.5.1    
-     [5] modelr_0.1.8      assertthat_0.2.1  cellranger_1.1.0  yaml_2.2.1       
-     [9] remotes_2.2.0     sessioninfo_1.1.1 globals_0.14.0    pillar_1.4.7     
-    [13] backports_1.2.1   glue_1.4.2        digest_0.6.27     rvest_0.3.6      
-    [17] colorspace_2.0-0  htmltools_0.5.1.1 pkgconfig_2.0.3   broom_0.7.4      
-    [21] listenv_0.8.0     haven_2.3.1       scales_1.1.1      processx_3.4.5   
-    [25] generics_0.1.0    ellipsis_0.3.1    cachem_1.0.3      withr_2.4.1      
-    [29] cli_2.3.0         magrittr_2.0.1    crayon_1.4.1      readxl_1.3.1     
-    [33] memoise_2.0.0     evaluate_0.14     ps_1.5.0          parallelly_1.23.0
-    [37] fs_1.5.0          future_1.21.0     xml2_1.3.2        pkgbuild_1.2.0   
-    [41] tools_4.0.3       prettyunits_1.1.1 hms_1.0.0         lifecycle_0.2.0  
-    [45] munsell_0.5.0     reprex_1.0.0      callr_3.5.1       compiler_4.0.3   
-    [49] rlang_0.4.10      grid_4.0.3        iterators_1.0.13  rstudioapi_0.13  
-    [53] rmarkdown_2.6     testthat_3.0.1    gtable_0.3.0      codetools_0.2-18 
-    [57] DBI_1.1.1         R6_2.5.0          lubridate_1.7.9.2 knitr_1.31       
-    [61] doFuture_0.12.0   fastmap_1.1.0     rprojroot_2.0.2   desc_1.2.0       
-    [65] stringi_1.5.3     parallel_4.0.3    Rcpp_1.0.6        vctrs_0.3.6      
-    [69] dbplyr_2.1.0      tidyselect_1.1.0  xfun_0.21        
+     [5] modelr_0.1.8      assertthat_0.2.1  doRNG_1.8.2       cellranger_1.1.0 
+     [9] yaml_2.2.1        remotes_2.2.0     sessioninfo_1.1.1 globals_0.14.0   
+    [13] pillar_1.4.7      backports_1.2.1   glue_1.4.2        digest_0.6.27    
+    [17] rvest_0.3.6       colorspace_2.0-0  htmltools_0.5.1.1 pkgconfig_2.0.3  
+    [21] broom_0.7.5       listenv_0.8.0     haven_2.3.1       scales_1.1.1     
+    [25] processx_3.4.5    generics_0.1.0    ellipsis_0.3.1    cachem_1.0.4     
+    [29] withr_2.4.1       cli_2.3.0         magrittr_2.0.1    crayon_1.4.1     
+    [33] readxl_1.3.1      memoise_2.0.0     evaluate_0.14     ps_1.5.0         
+    [37] parallelly_1.23.0 fs_1.5.0          future_1.21.0     xml2_1.3.2       
+    [41] pkgbuild_1.2.0    tools_4.0.4       prettyunits_1.1.1 hms_1.0.0        
+    [45] lifecycle_1.0.0   munsell_0.5.0     reprex_1.0.0      rngtools_1.5     
+    [49] callr_3.5.1       compiler_4.0.4    rlang_0.4.10      grid_4.0.4       
+    [53] iterators_1.0.13  rstudioapi_0.13   rmarkdown_2.7     testthat_3.0.2   
+    [57] gtable_0.3.0      codetools_0.2-18  DBI_1.1.1         R6_2.5.0         
+    [61] lubridate_1.7.9.2 knitr_1.31        doFuture_0.12.0   fastmap_1.1.0    
+    [65] rprojroot_2.0.2   desc_1.2.0        stringi_1.5.3     parallel_4.0.4   
+    [69] Rcpp_1.0.6        vctrs_0.3.6       dbplyr_2.1.0      tidyselect_1.1.0 
+    [73] xfun_0.21        
 
 # References
 

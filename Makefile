@@ -29,6 +29,10 @@ simplots_pw = ./output/sims/power100.pdf \
               ./output/sims/t1e100.pdf \
               ./output/sims/t1e1000.pdf
 
+## Plots on Type I error of random mating test
+simplots_rm = ./output/sims/rm_t1e100.pdf \
+              ./output/sims/rm_t1e1000.pdf
+
 ## Inferred alpha plots
 simplots_in = ./output/sims/inferred_alpha.pdf
 
@@ -52,7 +56,7 @@ tetra : ./output/tetra/iso_dr.pdf \
 
 # Simulation study
 .PHONY : sims
-sims : $(simplots_qq) $(simplots_dr) $(simplots_pw) $(simplots_in)
+sims : $(simplots_qq) $(simplots_dr) $(simplots_pw) $(simplots_in) $(simplots_rm)
 
 ./output/sims/simdf.csv : ./analysis/sims.R
 	mkdir -p ./output/rout
@@ -75,6 +79,12 @@ $(simplots_pw) : ./analysis/sims_plots_power.R ./output/sims/simdf.csv
 	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
 
 $(simplots_in) : ./analysis/sims_plots_inferred.R ./output/sims/simdf.csv
+	mkdir -p ./output/rout
+	mkdir -p ./output/sims
+	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
+
+
+$(simplots_rm) : ./analysis/sims_plots_rm.R ./output/sims/simdf.csv
 	mkdir -p ./output/rout
 	mkdir -p ./output/sims
 	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
