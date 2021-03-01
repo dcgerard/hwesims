@@ -21,7 +21,9 @@ simplots_dr = ./output/sims/alphahat_dr0.pdf \
 
 ## Plots checking distributional assumptions of p-values
 simplots_qq = ./output/sims/qq_nind100.pdf \
-              ./output/sims/qq_nind1000.pdf
+              ./output/sims/qq_nind1000.pdf \
+              ./output/sims/qq_ll_nind100.pdf \
+              ./output/sims/qq_ll_nind1000.pdf
 
 ## Plots on Type I error and power from simulations
 simplots_pw = ./output/sims/power100.pdf \
