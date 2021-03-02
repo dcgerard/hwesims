@@ -49,8 +49,12 @@ filtered_mcadat = ./data/mca/mca_small.vcf
 count_mcadat = ./output/mca/mca_refmat.csv \
                ./output/mca/mca_sizemat.csv
 
+## read-counts used from Shirasawa et al (2017)
+count_shir = ./output/shir/shir_alt.csv \
+             ./output/shir/shir_ref.csv
+
 .PHONY : all
-all : tetra sims mca
+all : tetra sims mca shir
 
 # Analyses to highlight difficulty in tetraploids
 .PHONY : tetra
@@ -131,4 +135,18 @@ $(count_mcadat) : ./analysis/mca/mca_extract.R $(filtered_mcadat)
 ./output/mca/mca_nmat.csv : ./analysis/mca/mca_geno.R ./output/mca/mca_updog.RDS
 	mkdir -p ./output/rout
 	mkdir -p ./output/mca
+	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
+
+## Data analysis using Shirasawa data
+.PHONY : shir
+shir : $(count_shir)
+
+./data/shir/KDRIsweetpotatoXushu18S1LG2017.vcf : 
+	mkdir -p ./data/shir
+	wget --directory-prefix=data/shir --no-clobber ftp://ftp.kazusa.or.jp/pub/sweetpotato/GeneticMap/KDRIsweetpotatoXushu18S1LG2017.vcf.gz
+	7z e ./data/shir/KDRIsweetpotatoXushu18S1LG2017.vcf.gz -o./data/shir
+
+$(count_shir) : ./analysis/shir/shir_filter.R ./data/shir/KDRIsweetpotatoXushu18S1LG2017.vcf
+	mkdir -p ./output/rout
+	mkdir -p ./output/shir
 	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout

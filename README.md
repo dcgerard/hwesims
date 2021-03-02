@@ -5,8 +5,8 @@
 
 ## Instructions
 
-To run these scripts, you will need to have the latest version of R, and
-GNU Make, running on a Linux system.
+To run these scripts, you will need to have the latest version of R, GNU
+Make, wget, and 7-zip, running on a Linux system.
 
 1.  Install the appropriate R packages
 
