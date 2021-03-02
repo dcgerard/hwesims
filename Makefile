@@ -104,7 +104,7 @@ $(simplots_rm) : ./analysis/sims_plots_rm.R ./output/sims/simdf.csv
 
 ## Analyze McAllister and Miller (2016) data
 .PHONY : mca
-mca : ./output/mca/mca_updog
+mca : ./output/mca/mca_nmat.csv
 
 $(raw_mcadat) :
 	mkdir -p ./data/mca
@@ -123,7 +123,12 @@ $(count_mcadat) : ./analysis/mca_extract.R $(filtered_mcadat)
 	mkdir -p ./output/mca
 	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
 
-./output/mca/mca_updog : ./analysis/mca_updog.R $(count_mcadat)
+./output/mca/mca_updog.RDS : ./analysis/mca_updog.R $(count_mcadat)
 	mkdir -p ./output/rout
 	mkdir -p ./output/mca
 	$(rexec) '--args nc=$(nc)' $< ./output/rout/$(basename $(notdir $<)).Rout
+
+./output/mca/mca_nmat.csv : ./analysis/mca_geno.R ./output/mca/mca_updog.RDS
+	mkdir -p ./output/rout
+	mkdir -p ./output/mca
+	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
