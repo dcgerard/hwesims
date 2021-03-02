@@ -71,33 +71,33 @@ tetra : ./output/tetra/iso_dr.pdf \
 .PHONY : sims
 sims : $(simplots_qq) $(simplots_dr) $(simplots_pw) $(simplots_in) $(simplots_rm)
 
-./output/sims/simdf.csv : ./analysis/sims.R
+./output/sims/simdf.csv : ./analysis/sims/sims.R
 	mkdir -p ./output/rout
 	mkdir -p ./output/sims
 	$(rexec) '--args nc=$(nc)' $< ./output/rout/$(basename $(notdir $<)).Rout
 
-$(simplots_qq) : ./analysis/sims_plots_qq.R ./output/sims/simdf.csv
+$(simplots_qq) : ./analysis/sims/sims_plots_qq.R ./output/sims/simdf.csv
 	mkdir -p ./output/rout
 	mkdir -p ./output/sims
 	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
 
-$(simplots_dr) : ./analysis/sims_plots_dr.R ./output/sims/simdf.csv
+$(simplots_dr) : ./analysis/sims/sims_plots_dr.R ./output/sims/simdf.csv
 	mkdir -p ./output/rout
 	mkdir -p ./output/sims
 	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
 
-$(simplots_pw) : ./analysis/sims_plots_power.R ./output/sims/simdf.csv
+$(simplots_pw) : ./analysis/sims/sims_plots_power.R ./output/sims/simdf.csv
 	mkdir -p ./output/rout
 	mkdir -p ./output/sims
 	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
 
-$(simplots_in) : ./analysis/sims_plots_inferred.R ./output/sims/simdf.csv
+$(simplots_in) : ./analysis/sims/sims_plots_inferred.R ./output/sims/simdf.csv
 	mkdir -p ./output/rout
 	mkdir -p ./output/sims
 	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
 
 
-$(simplots_rm) : ./analysis/sims_plots_rm.R ./output/sims/simdf.csv
+$(simplots_rm) : ./analysis/sims/sims_plots_rm.R ./output/sims/simdf.csv
 	mkdir -p ./output/rout
 	mkdir -p ./output/sims
 	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
@@ -113,22 +113,22 @@ $(raw_mcadat) :
 	mv ./data/mca/9026 ./data/mca/McAllister.Miller.all.mergedRefGuidedSNPs.vcf.gz
 	mv ./data/mca/9027 ./data/mca/McAllister_Miller_Locality_Ploidy_Info.csv
 
-$(filtered_mcadat) : ./analysis/mca_filter.R $(raw_mcadat)
+$(filtered_mcadat) : ./analysis/mca/mca_filter.R $(raw_mcadat)
 	mkdir -p ./output/rout
 	mkdir -p ./data/mca
 	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
 
-$(count_mcadat) : ./analysis/mca_extract.R $(filtered_mcadat)
+$(count_mcadat) : ./analysis/mca/mca_extract.R $(filtered_mcadat)
 	mkdir -p ./output/rout
 	mkdir -p ./output/mca
 	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
 
-./output/mca/mca_updog.RDS : ./analysis/mca_updog.R $(count_mcadat)
+./output/mca/mca_updog.RDS : ./analysis/mca/mca_updog.R $(count_mcadat)
 	mkdir -p ./output/rout
 	mkdir -p ./output/mca
 	$(rexec) '--args nc=$(nc)' $< ./output/rout/$(basename $(notdir $<)).Rout
 
-./output/mca/mca_nmat.csv : ./analysis/mca_geno.R ./output/mca/mca_updog.RDS
+./output/mca/mca_nmat.csv : ./analysis/mca/mca_geno.R ./output/mca/mca_updog.RDS
 	mkdir -p ./output/rout
 	mkdir -p ./output/mca
 	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
