@@ -38,8 +38,19 @@ simplots_rm = ./output/sims/rm_t1e100.pdf \
 ## Inferred alpha plots
 simplots_in = ./output/sims/inferred_alpha.pdf
 
+## McAllister and Miller (2016) raw data
+raw_mcadat = ./data/mca/McAllister.Miller.all.mergedRefGuidedSNPs.vcf.gz \
+             ./data/mca/McAllister_Miller_Locality_Ploidy_Info.csv
+
+## McAllister and Miller (2016) filtered data
+filtered_mcadat = ./data/mca/mca_small.vcf
+
+## read-counts used from McAllister and Miller (2016)
+count_mcadat = ./output/mca/mca_refmat.csv \
+               ./output/mca/mca_sizemat.csv
+
 .PHONY : all
-all : tetra sims
+all : tetra sims mca
 
 # Analyses to highlight difficulty in tetraploids
 .PHONY : tetra
@@ -90,3 +101,29 @@ $(simplots_rm) : ./analysis/sims_plots_rm.R ./output/sims/simdf.csv
 	mkdir -p ./output/rout
 	mkdir -p ./output/sims
 	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
+
+## Analyze McAllister and Miller (2016) data
+.PHONY : mca
+mca : ./output/mca/mca_updog
+
+$(raw_mcadat) :
+	mkdir -p ./data/mca
+	wget --directory-prefix=data/mca --no-clobber https://datadryad.org/stash/downloads/file_stream/9026
+	wget --directory-prefix=data/mca --no-clobber https://datadryad.org/stash/downloads/file_stream/9027
+	mv ./data/mca/9026 ./data/mca/McAllister.Miller.all.mergedRefGuidedSNPs.vcf.gz
+	mv ./data/mca/9027 ./data/mca/McAllister_Miller_Locality_Ploidy_Info.csv
+
+$(filtered_mcadat) : ./analysis/mca_filter.R $(raw_mcadat)
+	mkdir -p ./output/rout
+	mkdir -p ./data/mca
+	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
+
+$(count_mcadat) : ./analysis/mca_extract.R $(filtered_mcadat)
+	mkdir -p ./output/rout
+	mkdir -p ./output/mca
+	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
+
+./output/mca/mca_updog : ./analysis/mca_updog.R $(count_mcadat)
+	mkdir -p ./output/rout
+	mkdir -p ./output/mca
+	$(rexec) '--args nc=$(nc)' $< ./output/rout/$(basename $(notdir $<)).Rout

@@ -5,15 +5,22 @@
 
 ## Instructions
 
+To run these scripts, you will need to have the latest version of R, and
+GNU Make, running on a Linux system.
+
 1.  Install the appropriate R packages
 
     ``` r
     install.packages(c("devtools",
                        "tidyverse",
                        "ggthemes",
-                       "latex2exp"))
+                       "latex2exp",
+                       "BiocManager",
+                       "future"))
+    BiocManager::install("VariantAnnotation")
     devtools::install_github("dcgerard/hwep")
     devtools::install_github("dcgerard/phwelike")
+    devtools::install_github("dcgerard/updog")
     ```
 
     The hwep package contains the new methods from Gerard (2021), while
@@ -55,35 +62,61 @@
     [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
 
     attached base packages:
-    [1] stats     graphics  grDevices utils     datasets  methods   base     
+    [1] stats4    parallel  stats     graphics  grDevices utils     datasets 
+    [8] methods   base     
 
     other attached packages:
-     [1] phwelike_0.0.0.9000 hwep_0.0.0.9000     latex2exp_0.4.0    
-     [4] ggthemes_4.2.4      forcats_0.5.1       stringr_1.4.0      
-     [7] dplyr_1.0.4         purrr_0.3.4         readr_1.4.0        
-    [10] tidyr_1.1.2         tibble_3.0.6        ggplot2_3.3.3      
-    [13] tidyverse_1.3.0     devtools_2.3.2      usethis_2.0.1      
+     [1] updog_2.1.0                 future_1.21.0              
+     [3] VariantAnnotation_1.36.0    Rsamtools_2.6.0            
+     [5] Biostrings_2.58.0           XVector_0.30.0             
+     [7] SummarizedExperiment_1.20.0 Biobase_2.50.0             
+     [9] GenomicRanges_1.42.0        GenomeInfoDb_1.26.2        
+    [11] IRanges_2.24.1              S4Vectors_0.28.1           
+    [13] MatrixGenerics_1.2.1        matrixStats_0.58.0         
+    [15] BiocGenerics_0.36.0         BiocManager_1.30.10        
+    [17] phwelike_0.0.0.9000         hwep_0.0.0.9000            
+    [19] latex2exp_0.4.0             ggthemes_4.2.4             
+    [21] forcats_0.5.1               stringr_1.4.0              
+    [23] dplyr_1.0.4                 purrr_0.3.4                
+    [25] readr_1.4.0                 tidyr_1.1.2                
+    [27] tibble_3.0.6                ggplot2_3.3.3              
+    [29] tidyverse_1.3.0             devtools_2.3.2             
+    [31] usethis_2.0.1              
 
     loaded via a namespace (and not attached):
-     [1] httr_1.4.2        pkgload_1.1.0     jsonlite_1.7.2    foreach_1.5.1    
-     [5] modelr_0.1.8      assertthat_0.2.1  doRNG_1.8.2       cellranger_1.1.0 
-     [9] yaml_2.2.1        remotes_2.2.0     sessioninfo_1.1.1 globals_0.14.0   
-    [13] pillar_1.4.7      backports_1.2.1   glue_1.4.2        digest_0.6.27    
-    [17] rvest_0.3.6       colorspace_2.0-0  htmltools_0.5.1.1 pkgconfig_2.0.3  
-    [21] broom_0.7.5       listenv_0.8.0     haven_2.3.1       scales_1.1.1     
-    [25] processx_3.4.5    generics_0.1.0    ellipsis_0.3.1    cachem_1.0.4     
-    [29] withr_2.4.1       cli_2.3.0         magrittr_2.0.1    crayon_1.4.1     
-    [33] readxl_1.3.1      memoise_2.0.0     evaluate_0.14     ps_1.5.0         
-    [37] parallelly_1.23.0 fs_1.5.0          future_1.21.0     xml2_1.3.2       
-    [41] pkgbuild_1.2.0    tools_4.0.4       prettyunits_1.1.1 hms_1.0.0        
-    [45] lifecycle_1.0.0   munsell_0.5.0     reprex_1.0.0      rngtools_1.5     
-    [49] callr_3.5.1       compiler_4.0.4    rlang_0.4.10      grid_4.0.4       
-    [53] iterators_1.0.13  rstudioapi_0.13   rmarkdown_2.7     testthat_3.0.2   
-    [57] gtable_0.3.0      codetools_0.2-18  DBI_1.1.1         R6_2.5.0         
-    [61] lubridate_1.7.9.2 knitr_1.31        doFuture_0.12.0   fastmap_1.1.0    
-    [65] rprojroot_2.0.2   desc_1.2.0        stringi_1.5.3     parallel_4.0.4   
-    [69] Rcpp_1.0.6        vctrs_0.3.6       dbplyr_2.1.0      tidyselect_1.1.0 
-    [73] xfun_0.21        
+     [1] colorspace_2.0-0         ellipsis_0.3.1           rprojroot_2.0.2         
+     [4] RcppArmadillo_0.10.2.1.0 fs_1.5.0                 rstudioapi_0.13         
+     [7] listenv_0.8.0            remotes_2.2.0            bit64_4.0.5             
+    [10] AnnotationDbi_1.52.0     lubridate_1.7.9.2        xml2_1.3.2              
+    [13] codetools_0.2-18         cachem_1.0.4             knitr_1.31              
+    [16] pkgload_1.1.0            jsonlite_1.7.2           broom_0.7.5             
+    [19] dbplyr_2.1.0             compiler_4.0.4           httr_1.4.2              
+    [22] backports_1.2.1          assertthat_0.2.1         Matrix_1.3-2            
+    [25] fastmap_1.1.0            cli_2.3.0                htmltools_0.5.1.1       
+    [28] prettyunits_1.1.1        tools_4.0.4              gtable_0.3.0            
+    [31] glue_1.4.2               GenomeInfoDbData_1.2.4   rappdirs_0.3.3          
+    [34] doRNG_1.8.2              Rcpp_1.0.6               cellranger_1.1.0        
+    [37] vctrs_0.3.6              rtracklayer_1.50.0       iterators_1.0.13        
+    [40] xfun_0.21                globals_0.14.0           ps_1.5.0                
+    [43] testthat_3.0.2           rvest_0.3.6              lifecycle_1.0.0         
+    [46] rngtools_1.5             XML_3.99-0.5             zlibbioc_1.36.0         
+    [49] scales_1.1.1             BSgenome_1.58.0          hms_1.0.0               
+    [52] curl_4.3                 yaml_2.2.1               memoise_2.0.0           
+    [55] biomaRt_2.46.3           RSQLite_2.2.3            stringi_1.5.3           
+    [58] desc_1.2.0               foreach_1.5.1            GenomicFeatures_1.42.1  
+    [61] pkgbuild_1.2.0           BiocParallel_1.24.1      rlang_0.4.10            
+    [64] pkgconfig_2.0.3          bitops_1.0-6             evaluate_0.14           
+    [67] lattice_0.20-41          GenomicAlignments_1.26.0 bit_4.0.4               
+    [70] processx_3.4.5           tidyselect_1.1.0         parallelly_1.23.0       
+    [73] magrittr_2.0.1           R6_2.5.0                 generics_0.1.0          
+    [76] DelayedArray_0.16.1      DBI_1.1.1                pillar_1.4.7            
+    [79] haven_2.3.1              withr_2.4.1              RCurl_1.98-1.2          
+    [82] modelr_0.1.8             crayon_1.4.1             BiocFileCache_1.14.0    
+    [85] doFuture_0.12.0          rmarkdown_2.7            progress_1.2.2          
+    [88] grid_4.0.4               readxl_1.3.1             blob_1.2.1              
+    [91] callr_3.5.1              reprex_1.0.0             digest_0.6.27           
+    [94] openssl_1.4.3            munsell_0.5.0            askpass_1.1             
+    [97] sessioninfo_1.1.1       
 
 # References
 

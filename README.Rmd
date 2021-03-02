@@ -18,15 +18,21 @@ knitr::opts_chunk$set(
 
 ## Instructions
 
+To run these scripts, you will need to have the latest version of R, and GNU Make, running on a Linux system.
+
 1. Install the appropriate R packages
 
     ```{r, eval = FALSE}
     install.packages(c("devtools",
                        "tidyverse",
                        "ggthemes",
-                       "latex2exp"))
+                       "latex2exp",
+                       "BiocManager",
+                       "future"))
+    BiocManager::install("VariantAnnotation")
     devtools::install_github("dcgerard/hwep")
     devtools::install_github("dcgerard/phwelike")
+    devtools::install_github("dcgerard/updog")
     ```
     
     The hwep package contains the new methods from @gerard2021double, while the phwelike package contains the code written by @jiang2021computational and placed in package form by me.
@@ -54,7 +60,11 @@ lapply(c("devtools",
          "ggthemes",
          "latex2exp",
          "hwep",
-         "phwelike"), 
+         "phwelike",
+         "BiocManager",
+         "VariantAnnotation",
+         "future",
+         "updog"), 
        FUN = library,
        character.only = TRUE)
 ```
