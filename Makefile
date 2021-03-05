@@ -50,23 +50,41 @@ count_mcadat = ./output/mca/mca_refmat.csv \
                ./output/mca/mca_sizemat.csv
 
 ## read-counts used from Shirasawa et al (2017)
-count_shir = ./output/shir/shir_alt.csv \
+count_shir = ./output/shir/shir_size.csv \
              ./output/shir/shir_ref.csv
 
+## Final figures from Shirasawa data
+figs_shir = ./output/shir/shir_gamprob.pdf \
+            ./output/shir/shir_pbox.pdf \
+            ./output/shir/shir_rmhist.pdf
+
+## Raw Berdugo-Cely et al (2017) data
+raw_pot = ./data/pot/s1.doc \
+          ./data/pot/s2.xlsx \
+          ./data/pot/s3.xlsx \
+          ./data/pot/s4.doc \
+          ./data/pot/s5.doc
+
 .PHONY : all
-all : tetra sims mca shir
+all : tetra sims mca shir pot
 
 # Analyses to highlight difficulty in tetraploids
 .PHONY : tetra
 tetra : ./output/tetra/iso_dr.pdf \
-        ./output/tetra/s1_iterate.pdf
+        ./output/tetra/s1_iterate.pdf \
+        ./output/tetra/jiang_diff.pdf
 
-./output/tetra/iso_dr.pdf : ./analysis/dr_tetra.R
+./output/tetra/iso_dr.pdf : ./analysis/tetra/dr_tetra.R
 	mkdir -p ./output/rout
 	mkdir -p ./output/tetra
 	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
 
-./output/tetra/s1_iterate.pdf : ./analysis/gamfreq.R
+./output/tetra/s1_iterate.pdf : ./analysis/tetra/gamfreq.R
+	mkdir -p ./output/rout
+	mkdir -p ./output/tetra
+	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
+
+./output/tetra/jiang_diff.pdf : ./analysis/tetra/jiang_freq.R
 	mkdir -p ./output/rout
 	mkdir -p ./output/tetra
 	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
@@ -139,7 +157,7 @@ $(count_mcadat) : ./analysis/mca/mca_extract.R $(filtered_mcadat)
 
 ## Data analysis using Shirasawa data
 .PHONY : shir
-shir : $(count_shir)
+shir : $(figs_shir)
 
 ./data/shir/KDRIsweetpotatoXushu18S1LG2017.vcf : 
 	mkdir -p ./data/shir
@@ -150,3 +168,37 @@ $(count_shir) : ./analysis/shir/shir_filter.R ./data/shir/KDRIsweetpotatoXushu18
 	mkdir -p ./output/rout
 	mkdir -p ./output/shir
 	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
+
+./output/shir/shir_updog.RDS : ./analysis/shir/shir_updog.R $(count_shir)
+	mkdir -p ./output/rout
+	mkdir -p ./output/mca
+	$(rexec) '--args nc=$(nc)' $< ./output/rout/$(basename $(notdir $<)).Rout
+
+./output/shir/shir_nmat.csv : ./analysis/shir/shir_geno.R ./output/shir/shir_updog.RDS
+	mkdir -p ./output/rout
+	mkdir -p ./output/shir
+	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
+
+$(figs_shir) : ./analysis/shir/shir_hwep.R ./output/shir/shir_nmat.csv
+	mkdir -p ./output/rout
+	mkdir -p ./output/shir
+	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
+
+
+## Data analysis using Berdugo-Cely et al data (https://doi.org/10.1371/journal.pone.0173039)
+.PHONY : pot
+pot : $(raw_pot)
+
+$(raw_pot) :
+	mkdir -p ./data/pot
+	wget --directory-prefix=data/pot --no-clobber https://doi.org/10.1371/journal.pone.0173039.s002 
+	wget --directory-prefix=data/pot --no-clobber https://doi.org/10.1371/journal.pone.0173039.s003
+	wget --directory-prefix=data/pot --no-clobber https://doi.org/10.1371/journal.pone.0173039.s004
+	wget --directory-prefix=data/pot --no-clobber https://doi.org/10.1371/journal.pone.0173039.s005
+	wget --directory-prefix=data/pot --no-clobber https://doi.org/10.1371/journal.pone.0173039.s006
+	mv ./data/pot/journal.pone.0173039.s002 ./data/pot/s1.doc
+	mv ./data/pot/journal.pone.0173039.s003 ./data/pot/s2.xlsx
+	mv ./data/pot/journal.pone.0173039.s004 ./data/pot/s3.xlsx
+	mv ./data/pot/journal.pone.0173039.s005 ./data/pot/s4.doc
+	mv ./data/pot/journal.pone.0173039.s006 ./data/pot/s5.doc
+

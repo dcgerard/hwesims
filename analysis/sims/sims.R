@@ -18,7 +18,7 @@ cat(nc, "\n")
 
 ## Set up simulation parameters ----
 paramdf <- expand.grid(ploidy = c(4, 6, 8),
-                       nind = c(100, 1000),
+                       nind = c(25, 100, 1000),
                        dr_ratio = c(0, 0.5, 1),
                        true_r = c(0.1, 0.25, 0.5),
                        niter = c(1, 2, 3, Inf))

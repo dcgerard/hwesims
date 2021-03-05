@@ -18,6 +18,7 @@ good_miss <- rowMeans(is.na(sizemat)) < 0.5
 
 refmat <- refmat[good_af & good_size & good_miss, ]
 altmat <- altmat[good_af & good_size & good_miss, ]
+sizemat <- sizemat[good_af & good_size & good_miss, ]
 
 write.csv(x = refmat, file = "./output/shir/shir_ref.csv")
-write.csv(x = altmat, file = "./output/shir/shir_alt.csv")
+write.csv(x = sizemat, file = "./output/shir/shir_size.csv")
