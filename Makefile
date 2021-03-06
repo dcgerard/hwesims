@@ -38,17 +38,6 @@ simplots_rm = ./output/sims/rm_t1e100.pdf \
 ## Inferred alpha plots
 simplots_in = ./output/sims/inferred_alpha.pdf
 
-## McAllister and Miller (2016) raw data
-raw_mcadat = ./data/mca/McAllister.Miller.all.mergedRefGuidedSNPs.vcf.gz \
-             ./data/mca/McAllister_Miller_Locality_Ploidy_Info.csv
-
-## McAllister and Miller (2016) filtered data
-filtered_mcadat = ./data/mca/mca_small.vcf
-
-## read-counts used from McAllister and Miller (2016)
-count_mcadat = ./output/mca/mca_refmat.csv \
-               ./output/mca/mca_sizemat.csv
-
 ## read-counts used from Shirasawa et al (2017)
 count_shir = ./output/shir/shir_size.csv \
              ./output/shir/shir_ref.csv
@@ -57,13 +46,6 @@ count_shir = ./output/shir/shir_size.csv \
 figs_shir = ./output/shir/shir_gamprob.pdf \
             ./output/shir/shir_pbox.pdf \
             ./output/shir/shir_rmhist.pdf
-
-## Raw Berdugo-Cely et al (2017) data
-raw_pot = ./data/pot/s1.doc \
-          ./data/pot/s2.xlsx \
-          ./data/pot/s3.xlsx \
-          ./data/pot/s4.doc \
-          ./data/pot/s5.doc
 
 ## Get nmat for sturgeon data
 sturg_n = ./output/sturg/nmat_updog.RDS \
@@ -76,7 +58,7 @@ sturg_plots = ./output/sturg/sturg_hist.pdf \
               ./output/sturg/sturg_weirdn.pdf
 
 .PHONY : all
-all : tetra sims sturg shir pot mca
+all : tetra sims sturg shir
 
 # Analyses to highlight difficulty in tetraploids
 .PHONY : tetra
@@ -140,37 +122,6 @@ $(simplots_rm) : ./analysis/sims/sims_plots_rm.R ./output/sims/simdf.csv
 	mkdir -p ./output/sims
 	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
 
-## Analyze McAllister and Miller (2016) data
-.PHONY : mca
-mca : ./output/mca/mca_nmat.csv
-
-$(raw_mcadat) :
-	mkdir -p ./data/mca
-	wget --directory-prefix=data/mca --no-clobber https://datadryad.org/stash/downloads/file_stream/9026
-	wget --directory-prefix=data/mca --no-clobber https://datadryad.org/stash/downloads/file_stream/9027
-	mv ./data/mca/9026 ./data/mca/McAllister.Miller.all.mergedRefGuidedSNPs.vcf.gz
-	mv ./data/mca/9027 ./data/mca/McAllister_Miller_Locality_Ploidy_Info.csv
-
-$(filtered_mcadat) : ./analysis/mca/mca_filter.R $(raw_mcadat)
-	mkdir -p ./output/rout
-	mkdir -p ./data/mca
-	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
-
-$(count_mcadat) : ./analysis/mca/mca_extract.R $(filtered_mcadat)
-	mkdir -p ./output/rout
-	mkdir -p ./output/mca
-	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
-
-./output/mca/mca_updog.RDS : ./analysis/mca/mca_updog.R $(count_mcadat)
-	mkdir -p ./output/rout
-	mkdir -p ./output/mca
-	$(rexec) '--args nc=$(nc)' $< ./output/rout/$(basename $(notdir $<)).Rout
-
-./output/mca/mca_nmat.csv : ./analysis/mca/mca_geno.R ./output/mca/mca_updog.RDS
-	mkdir -p ./output/rout
-	mkdir -p ./output/mca
-	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
-
 ## Data analysis using Shirasawa data
 .PHONY : shir
 shir : $(figs_shir)
@@ -199,24 +150,6 @@ $(figs_shir) : ./analysis/shir/shir_hwep.R ./output/shir/shir_nmat.csv
 	mkdir -p ./output/rout
 	mkdir -p ./output/shir
 	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
-
-
-## Data analysis using Berdugo-Cely et al data (https://doi.org/10.1371/journal.pone.0173039)
-.PHONY : pot
-pot : $(raw_pot)
-
-$(raw_pot) :
-	mkdir -p ./data/pot
-	wget --directory-prefix=data/pot --no-clobber https://doi.org/10.1371/journal.pone.0173039.s002 
-	wget --directory-prefix=data/pot --no-clobber https://doi.org/10.1371/journal.pone.0173039.s003
-	wget --directory-prefix=data/pot --no-clobber https://doi.org/10.1371/journal.pone.0173039.s004
-	wget --directory-prefix=data/pot --no-clobber https://doi.org/10.1371/journal.pone.0173039.s005
-	wget --directory-prefix=data/pot --no-clobber https://doi.org/10.1371/journal.pone.0173039.s006
-	mv ./data/pot/journal.pone.0173039.s002 ./data/pot/s1.doc
-	mv ./data/pot/journal.pone.0173039.s003 ./data/pot/s2.xlsx
-	mv ./data/pot/journal.pone.0173039.s004 ./data/pot/s3.xlsx
-	mv ./data/pot/journal.pone.0173039.s005 ./data/pot/s4.doc
-	mv ./data/pot/journal.pone.0173039.s006 ./data/pot/s5.doc
 
 ## Data analysis of Sturgeon data from Delomas et al (2020)
 .PHONY : sturg
