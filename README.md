@@ -3,12 +3,20 @@
 
 # Reproduce the Analysis from Gerard (2021)
 
+This repo contains the scripts and instructions to reproduce the results
+of Gerard (2021). This involves simulations and real data analyses using
+the data from Shirasawa et al. (2017) and Delomas et al. (2020).
+
 ## Instructions
 
 To run these scripts, you will need to have the latest version of R, GNU
 Make, wget, and 7-zip, running on a Linux system.
 
-1.  Install the appropriate R packages
+1.  Download the data from Delomas et al. (2020) from Dryad \[XYZ DOI
+    goes here\] and place it in
+    “./data/sturg/knowPloidySturgeon\_for\_DG.txt.”
+
+2.  Install the appropriate R packages
 
     ``` r
     install.packages(c("devtools",
@@ -27,7 +35,7 @@ Make, wget, and 7-zip, running on a Linux system.
     the phwelike package contains the code written by Jiang, Ren, and
     Wu (2021) and placed in package form by me.
 
-2.  Run `make` in the terminal.
+3.  Run `make` in the terminal.
 
 ## Other Files
 
@@ -122,6 +130,14 @@ Make, wget, and 7-zip, running on a Linux system.
 
 <div id="refs" class="references csl-bib-body hanging-indent">
 
+<div id="ref-delomas2020inference" class="csl-entry">
+
+Delomas, Thomas A., Stuart C. Willis, Andrea Schreier, and Shawn Narum.
+2020. “Inference of Ploidy by Leveraging Read Depth from Amplicon
+Sequencing.” *bioRxiv*. <https://doi.org/10.1101/2020.07.30.229500>.
+
+</div>
+
 <div id="ref-fisher1943inheritance" class="csl-entry">
 
 Fisher, Ronald A, and K Mather. 1943. “The Inheritance of Style Length
@@ -144,6 +160,16 @@ Jiang, Libo, Xiangyu Ren, and Rongling Wu. 2021. “Computational
 Characterization of Double Reduction in Autotetraploid Natural
 Populations.” *The Plant Journal* n/a (n/a).
 <https://doi.org/10.1111/tpj.15126>.
+
+</div>
+
+<div id="ref-shirasawa2017high" class="csl-entry">
+
+Shirasawa, Kenta, Masaru Tanaka, Yasuhiro Takahata, Daifu Ma, Qinghe
+Cao, Qingchang Liu, Hong Zhai, et al. 2017. “A High-Density SNP Genetic
+Map Consisting of a Complete Set of Homologous Groups in Autohexaploid
+Sweetpotato (*Ipomoea Batatas*).” *Scientific Reports* 7.
+<https://doi.org/10.1038/srep44207>.
 
 </div>
 

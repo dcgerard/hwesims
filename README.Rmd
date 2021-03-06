@@ -16,11 +16,15 @@ knitr::opts_chunk$set(
 
 # Reproduce the Analysis from @gerard2021double
 
+This repo contains the scripts and instructions to reproduce the results of @gerard2021double. This involves simulations and real data analyses using the data from @shirasawa2017high and @delomas2020inference.
+
 ## Instructions
 
 To run these scripts, you will need to have the latest version of R, GNU Make, wget, and 7-zip, running on a Linux system.
 
-1. Install the appropriate R packages
+1. Download the data from @delomas2020inference from Dryad [XYZ DOI goes here] and place it in "./data/sturg/knowPloidySturgeon_for_DG.txt".
+
+2. Install the appropriate R packages
 
     ```{r, eval = FALSE}
     install.packages(c("devtools",
@@ -37,7 +41,7 @@ To run these scripts, you will need to have the latest version of R, GNU Make, w
     
     The hwep package contains the new methods from @gerard2021double, while the phwelike package contains the code written by @jiang2021computational and placed in package form by me.
 
-2. Run `make` in the terminal.
+3. Run `make` in the terminal.
 
 ## Other Files
 
