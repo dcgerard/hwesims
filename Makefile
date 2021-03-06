@@ -65,14 +65,25 @@ raw_pot = ./data/pot/s1.doc \
           ./data/pot/s4.doc \
           ./data/pot/s5.doc
 
+## Get nmat for sturgeon data
+sturg_n = ./output/sturg/nmat_updog.RDS \
+          ./output/sturg/nmat_delo.RDS \
+          ./output/sturg/sturg_updog.RDS
+
+## Final plots for sturgeon data
+sturg_plots = ./output/sturg/sturg_hist.pdf \
+              ./output/sturg/sturg_qq.pdf \
+              ./output/sturg/sturg_weirdn.pdf
+
 .PHONY : all
-all : tetra sims mca shir pot
+all : tetra sims sturg shir pot mca
 
 # Analyses to highlight difficulty in tetraploids
 .PHONY : tetra
 tetra : ./output/tetra/iso_dr.pdf \
         ./output/tetra/s1_iterate.pdf \
-        ./output/tetra/jiang_diff.pdf
+        ./output/tetra/jiang_diff.pdf \
+        ./output/tetra/naive_diff.pdf
 
 ./output/tetra/iso_dr.pdf : ./analysis/tetra/dr_tetra.R
 	mkdir -p ./output/rout
@@ -85,6 +96,11 @@ tetra : ./output/tetra/iso_dr.pdf \
 	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
 
 ./output/tetra/jiang_diff.pdf : ./analysis/tetra/jiang_freq.R
+	mkdir -p ./output/rout
+	mkdir -p ./output/tetra
+	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
+
+./output/tetra/naive_diff.pdf : ./analysis/tetra/naive_true.R
 	mkdir -p ./output/rout
 	mkdir -p ./output/tetra
 	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
@@ -202,3 +218,16 @@ $(raw_pot) :
 	mv ./data/pot/journal.pone.0173039.s005 ./data/pot/s4.doc
 	mv ./data/pot/journal.pone.0173039.s006 ./data/pot/s5.doc
 
+## Data analysis of Sturgeon data from Delomas et al (2020)
+.PHONY : sturg
+sturg : $(sturg_plots)
+
+$(sturg_n) : ./analysis/sturg/sturg_nmat.R
+	mkdir -p ./output/rout
+	mkdir -p ./output/sturg
+	$(rexec) '--args nc=$(nc)' $< ./output/rout/$(basename $(notdir $<)).Rout
+
+$(sturg_plots) : ./analysis/sturg/sturg_hwep.R
+	mkdir -p ./output/rout
+	mkdir -p ./output/sturg
+	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
