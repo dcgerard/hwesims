@@ -2,25 +2,39 @@
 ## Fit hwep on Shirasawa data
 ######################
 
+# Number of threads to use for multithreaded computing. This must be
+# specified in the command-line shell; e.g., to use 8 threads, run
+# command
+#
+#  R CMD BATCH '--args nc=8' shir_hwep.R
+#
+args <- commandArgs(trailingOnly = TRUE)
+if (length(args) == 0) {
+  nc <- 1
+} else {
+  eval(parse(text = args[[1]]))
+}
+cat(nc, "\n")
+
 library(hwep)
 library(updog)
 library(future)
 library(tidyverse)
 nmat <- as.matrix(read.csv("./output/shir/shir_nmat.csv", row.names = 1))
 
-plan(multisession, workers = 6)
+plan(multisession, workers = nc)
 hout <- hwefit(nmat = nmat, type = "ustat", thresh = 0)
 plan("sequential")
 
-plan(multisession, workers = 6)
+plan(multisession, workers = nc)
 lout <- hwefit(nmat = nmat, type = "mle", thresh = 0)
 plan("sequential")
 
-plan(multisession, workers = 6)
+plan(multisession, workers = nc)
 dout <- hwefit(nmat = nmat, type = "nodr")
 plan("sequential")
 
-plan(multisession, workers = 6)
+plan(multisession, workers = nc)
 rout <- hwefit(nmat = round(nmat), type = "rm")
 plan("sequential")
 
