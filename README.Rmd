@@ -47,14 +47,13 @@ To run these scripts, you will need to have the latest version of R, GNU Make, w
 
 - [alpha_tetra.nb](./analysis/alpha_tetra.nb) is a Mathematica
   notebook that solves for the double reduction parameter given the
-  gamete genotype frequencies in a tetraploid population at HWE. 
-  This file was used to derive Equation (XYZ) in @gerard2021double.
+  gamete genotype frequencies in a tetraploid population at equilibrium. 
   The segregation probabilities come from Table 9 of @fisher1943inheritance.
+- [hex_equi.nb](./analysis/hex_equi.nb) is a Mathematica notebook that
+  calculates gamete frequencies at equilibrium for hexaploids.
 - [diploid.nb](./analysis/diploid.nb) is a Mathematica notebook that
   explores the $U$-statistic approach to testing for equilibrium in 
   diploids.
-- [hex_equi.nb](./analysis/hex_equi.nb) is a Mathematica notebook that
-  calculates gamete frequencies at equilibrium for hexaploids.
   
 ## Session Information
 
