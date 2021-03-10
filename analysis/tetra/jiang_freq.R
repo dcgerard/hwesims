@@ -41,7 +41,7 @@ pardf <- expand.grid(r = rseq, alpha = alphaseq)
 pardf$theo <- vector(mode = "list", length = nrow(pardf))
 pardf$jiang <- vector(mode = "list", length = nrow(pardf))
 for (i in seq_len(nrow(pardf))) {
-  pardf$theo[[i]] <- matrix(theofreq(alpha = pardf$alpha[[i]], r = pardf$r[[i]], ploidy = 4)$q, nrow = 1)
+  pardf$theo[[i]] <- matrix(hwefreq(alpha = pardf$alpha[[i]], r = pardf$r[[i]], ploidy = 4), nrow = 1)
   colnames(pardf$theo[[i]]) <- paste0("th_", 0:4)
   pardf$theo[[i]] <- as.data.frame(pardf$theo[[i]])
   pardf$jiang[[i]] <- matrix(jiangfreq(alpha = pardf$alpha[[i]], r = pardf$r[[i]]), nrow = 1)

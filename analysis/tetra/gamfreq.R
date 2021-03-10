@@ -95,6 +95,7 @@ simdf$p <- str_replace_all(simdf$p, "0\\.", "\\.")
 simdf$hjust <- c(-0.15, rep(1.05, 4))
 ggplot(simdf, aes(x = iter, y = alpha, label = p, hjust = hjust)) +
   geom_line() +
+  geom_point() +
   geom_text(angle = 90) +
   scale_x_continuous(breaks = seq_len(itermax)) +
   theme_bw() +

@@ -90,8 +90,8 @@ uout$p_hwe[weirdn]
 
 rhat1 <- sum(nmat[weirdn, ][1,] * 0:4) / (sum(nmat[weirdn, ][1,]) * 4)
 rhat2 <- sum(nmat[weirdn, ][2,] * 0:4) / (sum(nmat[weirdn, ][2,]) * 4)
-th_1 <- theofreq(alpha = uout$alpha1[weirdn[[1]]], r = rhat1, ploidy = 4)$q * sum(nmat[weirdn[[1]], ])
-th_2 <- theofreq(alpha = uout$alpha1[weirdn[[2]]], r = rhat2, ploidy = 4)$q * sum(nmat[weirdn[[2]], ])
+th_1 <- hwefreq(alpha = uout$alpha1[weirdn[[1]]], r = rhat1, ploidy = 4) * sum(nmat[weirdn[[1]], ])
+th_2 <- hwefreq(alpha = uout$alpha1[weirdn[[2]]], r = rhat2, ploidy = 4) * sum(nmat[weirdn[[2]], ])
 en_1 <- dbinom(x = 0:4, size = 4, prob = rhat1) * sum(nmat[weirdn[[1]], ])
 en_2 <- dbinom(x = 0:4, size = 4, prob = rhat2) * sum(nmat[weirdn[[2]], ])
 

@@ -14,7 +14,7 @@ pardf$naive <- vector(mode = "list", length = nrow(pardf))
 pardf$alpha <- vector(mode = "list", length = nrow(pardf))
 for (i in seq_len(nrow(pardf))) {
   pardf$alpha[[i]] <- drbounds(ploidy = pardf$ploidy[[i]]) * pardf$dr_ratio[[i]]
-  pardf$theo[[i]] <- matrix(theofreq(alpha = pardf$alpha[[i]], r = pardf$r[[i]], ploidy = pardf$ploidy[[i]])$q, nrow = 1)
+  pardf$theo[[i]] <- matrix(hwefreq(alpha = pardf$alpha[[i]], r = pardf$r[[i]], ploidy = pardf$ploidy[[i]]), nrow = 1)
   colnames(pardf$theo[[i]]) <- paste0("th_", 0:pardf$ploidy[[i]])
   pardf$theo[[i]] <- as.data.frame(pardf$theo[[i]])
   pardf$naive[[i]] <- matrix(dbinom(x = 0:pardf$ploidy[[i]], size = pardf$ploidy[[i]], prob = pardf$r[[i]]), nrow = 1)
