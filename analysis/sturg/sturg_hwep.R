@@ -35,17 +35,26 @@ future::plan(multisession, workers = nc)
 rout <- hwefit(nmat = nmat, type = "rm")
 future::plan("sequential")
 
+future::plan(multisession, workers = nc)
+bout <- hwefit(nmat = nmat, type = "boot")
+future::plan("sequential")
+
+ks.test(bout$p_hwe, y = qunif)
 ks.test(rout$p_rm, y = qunif)
 ks.test(uout$p_hwe, y = qunif)
 ks.test(lout$p_hwe, y = qunif)
 ks.test(nout$p_hwe, y = qunif)
 
-pdf <- tibble(`Random Mating` = rout$p_rm, `U-stat` = uout$p_hwe, `Likelihood` = lout$p_hwe, `No DR` = nout$p_hwe)
+pdf <- tibble(`Random Mating` = rout$p_rm,
+              `U-stat` = uout$p_hwe,
+              `Likelihood` = lout$p_hwe,
+              `No DR` = nout$p_hwe,
+              Boot = bout$p_hwe)
 
 pdf %>%
   gather(key = "method", value = "pvalue") %>%
   ggplot(aes(x = pvalue)) +
-  geom_histogram(bins = 20, color = "black", fill = "white") +
+  geom_histogram(bins = 10, color = "black", fill = "white") +
   facet_wrap(.~method) +
   theme_bw() +
   theme(strip.background = element_rect(fill = "white")) ->
