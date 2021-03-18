@@ -61,7 +61,7 @@ sturg_plots = ./output/sturg/sturg_hist.pdf \
 boot_plots = ./output/boot/boot_qq.pdf
 
 .PHONY : all
-all : tetra sims sturg shir boot
+all : tetra sims sturg shir boot uncert
 
 # Analyses to highlight difficulty in tetraploids
 .PHONY : tetra
@@ -180,4 +180,18 @@ boot : $(boot_plots)
 $(boot_plots) : ./analysis/boot/boot_plots.R ./output/boot/boot_sims.csv
 	mkdir -p ./output/rout
 	mkdir -p ./output/boot
+	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
+
+## Sims under genotype uncertainty
+.PHONY : uncert
+uncert : ./output/uncert/uncert_hist.pdf
+
+./output/uncert/uncert_sims.csv : ./analysis/uncert/uncert.R
+	mkdir -p ./output/rout
+	mkdir -p ./output/uncert
+	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
+
+./output/uncert/uncert_hist.pdf : ./analysis/uncert/uncert_plots.R ./output/uncert/uncert_sims.csv
+	mkdir -p ./output/rout
+	mkdir -p ./output/uncert
 	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
