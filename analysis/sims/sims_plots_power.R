@@ -7,6 +7,7 @@ library(ggthemes)
 library(latex2exp)
 simdf <- read_csv("./output/sims/simdf.csv",
                   col_types = cols(.default = col_double()))
+bdf <- read_csv("./output/boot/boot_sims.csv")
 
 #' Confidence interval from binom.test()
 #'
@@ -52,11 +53,28 @@ simdf %>%
   select(-ci) ->
   longdf
 
-nind_unique <- unique(longdf$nind)
+bdf %>%
+  select(ploidy, nind, dr_ratio, r = true_r, niter, pvalue = pval) %>%
+  mutate(method = "Boot",
+         reject = pvalue < siglev) %>%
+  group_by(ploidy, nind, dr_ratio, r, niter, method) %>%
+  summarise(preject = mean(reject), x = sum(reject), n = n(), .groups = "keep") %>%
+  ungroup() %>%
+  mutate(niter = factor(niter),
+         r = paste0("r = ", r),
+         ploidy = paste0("K = ", ploidy),
+         dr_ratio = factor(dr_ratio)) %>%
+  mutate(ci = binom_ci(x = x, n = n, clev = 0.95)) %>%
+  mutate(lower = ci$lower, upper = ci$upper) %>%
+  select(-ci) ->
+  longbdf
 
+longdf <- bind_rows(longdf, longbdf)
+
+nind_unique <- unique(longdf$nind)
 for (i in seq_along(nind_unique)) {
   longdf %>%
-    filter(nind == nind_unique[[i]], method %in% c("U-stat", "MLE")) %>%
+    filter(nind == nind_unique[[i]], method %in% c("U-stat", "MLE", "Boot")) %>%
     ggplot(aes(x = niter,
                y = preject,
                color = dr_ratio,

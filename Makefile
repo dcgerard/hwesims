@@ -57,8 +57,11 @@ sturg_plots = ./output/sturg/sturg_hist.pdf \
               ./output/sturg/sturg_qq.pdf \
               ./output/sturg/sturg_weirdn.pdf
 
+## Bootstrap simulation plots
+boot_plots = ./output/boot/boot_qq.pdf
+
 .PHONY : all
-all : tetra sims sturg shir
+all : tetra sims sturg shir boot
 
 # Analyses to highlight difficulty in tetraploids
 .PHONY : tetra
@@ -106,7 +109,7 @@ $(simplots_dr) : ./analysis/sims/sims_plots_dr.R ./output/sims/simdf.csv
 	mkdir -p ./output/sims
 	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
 
-$(simplots_pw) : ./analysis/sims/sims_plots_power.R ./output/sims/simdf.csv
+$(simplots_pw) : ./analysis/sims/sims_plots_power.R ./output/sims/simdf.csv ./output/boot/boot_sims.csv
 	mkdir -p ./output/rout
 	mkdir -p ./output/sims
 	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
@@ -163,4 +166,18 @@ $(sturg_n) : ./analysis/sturg/sturg_nmat.R
 $(sturg_plots) : ./analysis/sturg/sturg_hwep.R
 	mkdir -p ./output/rout
 	mkdir -p ./output/sturg
+	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
+
+## Bootstrap simulations
+.PHONY : boot
+boot : $(boot_plots)
+
+./output/boot/boot_sims.csv : ./analysis/boot/boot_sims.R
+	mkdir -p ./output/rout
+	mkdir -p ./output/boot
+	$(rexec) '--args nc=$(nc)' $< ./output/rout/$(basename $(notdir $<)).Rout
+
+$(boot_plots) : ./analysis/boot/boot_plots.R ./output/boot/boot_sims.csv
+	mkdir -p ./output/rout
+	mkdir -p ./output/boot
 	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
