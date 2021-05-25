@@ -16,29 +16,15 @@ library(tidyverse)
 library(updog)
 library(future)
 
-sturg <- read_tsv(file = "./data/sturg/knowPloidySturgeon_for_DG.txt")
+# altCounts_dryad and refCounts_dryad are loaded
+load(file = "./data/sturg/8n_12n_sturgeon_readCounts.rda")
+stopifnot(rownames(altCounts_dryad) == rownames(refCounts_dryad))
+stopifnot(colnames(altCounts_dryad) == colnames(refCounts_dryad))
 
-sturg %>%
-  filter(relDepth == 1, truePloid == "4N") ->
-  sturg_oct
-
-sturg %>%
-  filter(relDepth == 1, truePloid == "6N") ->
-  sturg_do
-
-sturg_oct %>%
-  pivot_wider(id_cols = "Locus", names_from = "Ind", values_from = "A") ->
-  refdf
-
-sturg_oct %>%
-  pivot_wider(id_cols = "Locus", names_from = "Ind", values_from = "B") ->
-  altdf
-
-refmat <- as.matrix(refdf[-1])
-rownames(refmat) <- refdf$Locus
-
-altmat <- as.matrix(altdf[-1])
-rownames(altmat) <- altdf$Locus
+## 100% subsample (keep all reads) and presumed ploidy = 4 (ancestral = 8)
+ind_keep <- str_detect(string = rownames(altCounts_dryad), pattern = "100_8N$")
+refmat <- t(refCounts_dryad[ind_keep, ])
+altmat <- t(altCounts_dryad[ind_keep, ])
 
 sizemat <- refmat + altmat
 
@@ -53,18 +39,6 @@ get_nvec <- function(x, ploidy) {
 }
 
 nmat <- t(apply(genomat, 1, get_nvec, ploidy = 4))
-
-####################
-## Use their genotyping
-####################
-sturg_oct %>%
-  mutate(dosage = str_count(g, "A")) %>%
-  pivot_wider(id_cols = Locus, names_from = Ind, values_from = dosage) %>%
-  select(-Locus) %>%
-  as.matrix() %>%
-  apply(MARGIN = 1, FUN = get_nvec, ploidy = 4) %>%
-  t() ->
-  nmat2
 
 ## Write everything
 saveRDS(object = nmat, file = "./output/sturg/nmat_updog.RDS")

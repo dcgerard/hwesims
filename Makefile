@@ -4,7 +4,7 @@
 # parallelization. This could also be specified automatically using
 # environment variables. For example, in SLURM, SLURM_CPUS_PER_TASK
 # specifies the number of CPUs allocated for each task.
-nc = 6
+nc = 10
 
 # R scripting front-end. Note that makeCluster sometimes fails to
 # connect to a socker when using Rscript, so we are using the "R CMD
@@ -46,6 +46,12 @@ count_shir = ./output/shir/shir_size.csv \
 figs_shir = ./output/shir/shir_gamprob.pdf \
             ./output/shir/shir_pbox.pdf \
             ./output/shir/shir_rmhist.pdf
+
+## Raw data from Delomas et al (2021)
+sturg_dat = ./data/sturg/2n_3n_Chinook_readCounts.rda \
+            ./data/sturg/8n_12n_sturgeon_readCounts.rda \
+            ./data/sturg/10n_sturgeon_readCounts.rda \
+            ./data/sturg/white_sturgeon_genos.zip
 
 ## Get nmat for sturgeon data
 sturg_n = ./output/sturg/nmat_updog.RDS \
@@ -154,16 +160,27 @@ $(figs_shir) : ./analysis/shir/shir_hwep.R ./output/shir/shir_nmat.csv
 	mkdir -p ./output/shir
 	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
 
-## Data analysis of Sturgeon data from Delomas et al (2020)
+## Data analysis of Sturgeon data from Delomas et al (2021)
 .PHONY : sturg
 sturg : $(sturg_plots)
 
-$(sturg_n) : ./analysis/sturg/sturg_nmat.R
+$(sturg_dat) :
+	mkdir -p ./data/sturg
+	wget --directory-prefix=data/sturg --no-clobber https://datadryad.org/stash/downloads/file_stream/711274
+	mv ./data/sturg/711274 ./data/sturg/10n_sturgeon_readCounts.rda
+	wget --directory-prefix=data/sturg --no-clobber https://datadryad.org/stash/downloads/file_stream/711272
+	mv ./data/sturg/711272 ./data/sturg/2n_3n_Chinook_readCounts.rda
+	wget --directory-prefix=data/sturg --no-clobber https://datadryad.org/stash/downloads/file_stream/711273
+	mv ./data/sturg/711273 ./data/sturg/8n_12n_sturgeon_readCounts.rda
+	wget --directory-prefix=data/sturg --no-clobber https://datadryad.org/stash/downloads/file_stream/711275
+	mv ./data/sturg/711275 ./data/sturg/white_sturgeon_genos.zip
+
+$(sturg_n) : ./analysis/sturg/sturg_nmat.R $(sturg_dat)
 	mkdir -p ./output/rout
 	mkdir -p ./output/sturg
 	$(rexec) '--args nc=$(nc)' $< ./output/rout/$(basename $(notdir $<)).Rout
 
-$(sturg_plots) : ./analysis/sturg/sturg_hwep.R
+$(sturg_plots) : ./analysis/sturg/sturg_hwep.R $(sturg_n)
 	mkdir -p ./output/rout
 	mkdir -p ./output/sturg
 	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout

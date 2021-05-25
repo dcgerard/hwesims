@@ -5,18 +5,16 @@
 
 This repo contains the scripts and instructions to reproduce the results
 of Gerard (2021). This involves simulations and real data analyses using
-the data from Shirasawa et al. (2017) and Delomas et al. (2020).
+the data from Shirasawa et al. (2017)
+(<http://sweetpotato-garden.kazusa.or.jp/>) and Delomas et al. (2021)
+([doi:10.5061/dryad.crjdfn33r](https://www.doi.org/10.5061/dryad.crjdfn33r)).
 
 ## Instructions
 
 To run these scripts, you will need to have the latest version of R, GNU
 Make, wget, and 7-zip, running on a Linux system.
 
-1.  Download the data from Delomas et al. (2020) from Dryad \[XYZ DOI
-    goes here\] and place it in
-    “./data/sturg/knowPloidySturgeon\_for\_DG.txt.”
-
-2.  Install the appropriate R packages
+1.  Install the appropriate R packages
 
     ``` r
     install.packages(c("devtools",
@@ -31,11 +29,11 @@ Make, wget, and 7-zip, running on a Linux system.
     devtools::install_github("dcgerard/updog")
     ```
 
-    The hwep package contains the new methods from Gerard (2021), while
-    the phwelike package contains the code written by Jiang, Ren, and
-    Wu (2021) and placed in package form by me.
+    The `{hwep}` package contains the new methods from Gerard (2021),
+    while the `{phwelike}` package contains the code written by Jiang,
+    Ren, and Wu (2021) and placed in package form by me.
 
-3.  Run `make` in the terminal.
+2.  Run `make` in the terminal.
 
 ## Other Files
 
@@ -52,7 +50,7 @@ Make, wget, and 7-zip, running on a Linux system.
 
 ## Session Information
 
-    R version 4.0.5 (2021-03-31)
+    R version 4.1.0 (2021-05-18)
     Platform: x86_64-pc-linux-gnu (64-bit)
     Running under: Ubuntu 20.04.2 LTS
 
@@ -74,82 +72,85 @@ Make, wget, and 7-zip, running on a Linux system.
 
     other attached packages:
      [1] updog_2.1.0                 future_1.21.0              
-     [3] VariantAnnotation_1.36.0    Rsamtools_2.6.0            
-     [5] Biostrings_2.58.0           XVector_0.30.0             
-     [7] SummarizedExperiment_1.20.0 Biobase_2.50.0             
-     [9] GenomicRanges_1.42.0        GenomeInfoDb_1.26.7        
-    [11] IRanges_2.24.1              S4Vectors_0.28.1           
-    [13] MatrixGenerics_1.2.1        matrixStats_0.58.0         
-    [15] BiocGenerics_0.36.1         BiocManager_1.30.12        
+     [3] VariantAnnotation_1.38.0    Rsamtools_2.8.0            
+     [5] Biostrings_2.60.0           XVector_0.32.0             
+     [7] SummarizedExperiment_1.22.0 Biobase_2.52.0             
+     [9] GenomicRanges_1.44.0        GenomeInfoDb_1.28.0        
+    [11] IRanges_2.26.0              S4Vectors_0.30.0           
+    [13] MatrixGenerics_1.4.0        matrixStats_0.58.0         
+    [15] BiocGenerics_0.38.0         BiocManager_1.30.15        
     [17] phwelike_0.0.0.9000         hwep_0.0.1                 
     [19] latex2exp_0.5.0             ggthemes_4.2.4             
     [21] forcats_0.5.1               stringr_1.4.0              
-    [23] dplyr_1.0.5                 purrr_0.3.4                
+    [23] dplyr_1.0.6                 purrr_0.3.4                
     [25] readr_1.4.0                 tidyr_1.1.3                
-    [27] tibble_3.1.1                ggplot2_3.3.3              
-    [29] tidyverse_1.3.1             devtools_2.4.0             
+    [27] tibble_3.1.2                ggplot2_3.3.3              
+    [29] tidyverse_1.3.1             devtools_2.4.1             
     [31] usethis_2.0.1              
 
     loaded via a namespace (and not attached):
-     [1] colorspace_2.0-0         ellipsis_0.3.1           rprojroot_2.0.2         
-     [4] RcppArmadillo_0.10.4.0.0 fs_1.5.0                 rstudioapi_0.13         
-     [7] listenv_0.8.0            remotes_2.3.0            bit64_4.0.5             
-    [10] AnnotationDbi_1.52.0     fansi_0.4.2              lubridate_1.7.10        
-    [13] xml2_1.3.2               codetools_0.2-18         cachem_1.0.4            
-    [16] knitr_1.33               pkgload_1.2.1            jsonlite_1.7.2          
-    [19] broom_0.7.6              dbplyr_2.1.1             compiler_4.0.5          
-    [22] httr_1.4.2               backports_1.2.1          assertthat_0.2.1        
-    [25] Matrix_1.3-2             fastmap_1.1.0            cli_2.5.0               
-    [28] htmltools_0.5.1.1        prettyunits_1.1.1        tools_4.0.5             
-    [31] gtable_0.3.0             glue_1.4.2               GenomeInfoDbData_1.2.4  
-    [34] rappdirs_0.3.3           doRNG_1.8.2              Rcpp_1.0.6              
-    [37] cellranger_1.1.0         vctrs_0.3.7              rtracklayer_1.50.0      
-    [40] iterators_1.0.13         xfun_0.22                globals_0.14.0          
-    [43] ps_1.6.0                 testthat_3.0.2           rvest_1.0.0             
-    [46] lifecycle_1.0.0          rngtools_1.5             XML_3.99-0.6            
-    [49] zlibbioc_1.36.0          scales_1.1.1             BSgenome_1.58.0         
-    [52] hms_1.0.0                curl_4.3                 yaml_2.2.1              
-    [55] memoise_2.0.0            biomaRt_2.46.3           RSQLite_2.2.7           
-    [58] stringi_1.5.3            desc_1.3.0               foreach_1.5.1           
-    [61] GenomicFeatures_1.42.3   pkgbuild_1.2.0           BiocParallel_1.24.1     
-    [64] rlang_0.4.10             pkgconfig_2.0.3          bitops_1.0-7            
-    [67] evaluate_0.14            lattice_0.20-41          GenomicAlignments_1.26.0
-    [70] bit_4.0.4                processx_3.5.1           tidyselect_1.1.0        
-    [73] parallelly_1.24.0        magrittr_2.0.1           R6_2.5.0                
-    [76] generics_0.1.0           DelayedArray_0.16.3      DBI_1.1.1               
-    [79] pillar_1.6.0             haven_2.4.1              withr_2.4.2             
-    [82] RCurl_1.98-1.3           modelr_0.1.8             crayon_1.4.1            
-    [85] utf8_1.2.1               BiocFileCache_1.14.0     doFuture_0.12.0         
-    [88] rmarkdown_2.7            progress_1.2.2           grid_4.0.5              
-    [91] readxl_1.3.1             blob_1.2.1               callr_3.7.0             
-    [94] reprex_2.0.0             digest_0.6.27            openssl_1.4.3           
-    [97] munsell_0.5.0            askpass_1.1              sessioninfo_1.1.1       
+      [1] readxl_1.3.1             backports_1.2.1          BiocFileCache_2.0.0     
+      [4] BiocParallel_1.26.0      listenv_0.8.0            digest_0.6.27           
+      [7] foreach_1.5.1            htmltools_0.5.1.1        fansi_0.5.0             
+     [10] magrittr_2.0.1           memoise_2.0.0            BSgenome_1.60.0         
+     [13] remotes_2.3.0            globals_0.14.0           modelr_0.1.8            
+     [16] doFuture_0.12.0          prettyunits_1.1.1        colorspace_2.0-1        
+     [19] blob_1.2.1               rvest_1.0.0              rappdirs_0.3.3          
+     [22] haven_2.4.1              xfun_0.23                RcppArmadillo_0.10.5.0.0
+     [25] callr_3.7.0              crayon_1.4.1             RCurl_1.98-1.3          
+     [28] jsonlite_1.7.2           iterators_1.0.13         glue_1.4.2              
+     [31] gtable_0.3.0             zlibbioc_1.38.0          DelayedArray_0.18.0     
+     [34] pkgbuild_1.2.0           scales_1.1.1             DBI_1.1.1               
+     [37] rngtools_1.5             Rcpp_1.0.6               progress_1.2.2          
+     [40] bit_4.0.4                httr_1.4.2               ellipsis_0.3.2          
+     [43] pkgconfig_2.0.3          XML_3.99-0.6             dbplyr_2.1.1            
+     [46] utf8_1.2.1               tidyselect_1.1.1         rlang_0.4.11            
+     [49] AnnotationDbi_1.54.0     munsell_0.5.0            cellranger_1.1.0        
+     [52] tools_4.1.0              cachem_1.0.5             cli_2.5.0               
+     [55] generics_0.1.0           RSQLite_2.2.7            broom_0.7.6             
+     [58] evaluate_0.14            fastmap_1.1.0            yaml_2.2.1              
+     [61] processx_3.5.2           knitr_1.33               bit64_4.0.5             
+     [64] fs_1.5.0                 KEGGREST_1.32.0          doRNG_1.8.2             
+     [67] xml2_1.3.2               biomaRt_2.48.0           compiler_4.1.0          
+     [70] rstudioapi_0.13          filelock_1.0.2           curl_4.3.1              
+     [73] png_0.1-7                testthat_3.0.2           reprex_2.0.0            
+     [76] stringi_1.6.2            ps_1.6.0                 GenomicFeatures_1.44.0  
+     [79] desc_1.3.0               lattice_0.20-44          Matrix_1.3-3            
+     [82] vctrs_0.3.8              pillar_1.6.1             lifecycle_1.0.0         
+     [85] bitops_1.0-7             rtracklayer_1.52.0       R6_2.5.0                
+     [88] BiocIO_1.2.0             parallelly_1.25.0        sessioninfo_1.1.1       
+     [91] codetools_0.2-18         assertthat_0.2.1         pkgload_1.2.1           
+     [94] rprojroot_2.0.2          rjson_0.2.20             withr_2.4.2             
+     [97] GenomicAlignments_1.28.0 GenomeInfoDbData_1.2.6   hms_1.1.0               
+    [100] grid_4.1.0               rmarkdown_2.8            lubridate_1.7.10        
+    [103] restfulr_0.0.13         
 
 # References
 
 <div id="refs" class="references csl-bib-body hanging-indent">
 
-<div id="ref-delomas2020inference" class="csl-entry">
+<div id="ref-delomas2021genotyping" class="csl-entry">
 
-Delomas, Thomas A., Stuart C. Willis, Andrea Schreier, and Shawn Narum.
-2020. “Inference of Ploidy by Leveraging Read Depth from Amplicon
-Sequencing.” *bioRxiv*. <https://doi.org/10.1101/2020.07.30.229500>.
+Delomas, Thomas A., Stuart C. Willis, Blaine L. Parker, Donella Miller,
+Paul Anders, Andrea Schreier, and Shawn Narum. 2021. “Genotyping SNPs
+and Inferring Ploidy by Amplicon Sequencing for Polyploid,
+Ploidy-Variable Organisms.” *Molecular Ecology Resources*, In Press.
+<https://doi.org/10.1111/1755-0998.13431>.
 
 </div>
 
 <div id="ref-fisher1943inheritance" class="csl-entry">
 
 Fisher, Ronald A, and K Mather. 1943. “The Inheritance of Style Length
-in Lythrum Salicaria.” *Annals of Eugenics* 12 (1): 1–23.
+in *Lythrum Salicaria*.” *Annals of Eugenics* 12 (1): 1–23.
 <https://doi.org/10.1111/j.1469-1809.1943.tb02307.x>.
 
 </div>
 
 <div id="ref-gerard2021double" class="csl-entry">
 
-Gerard, David. 2021. “Double Reduction Estimation and Hardy-Weinberg
-Equilibrium Tests in Natural Autopolyploid Populations.” *Unpublished
-Manuscript*.
+Gerard, David. 2021. “Double Reduction Estimation and Equilibrium Tests
+in Natural Autopolyploid Populations.” *Unpublished Manuscript*.
 
 </div>
 
