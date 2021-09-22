@@ -16,6 +16,8 @@ knitr::opts_chunk$set(
 
 # Reproduce the Analysis from @gerard2021double
 
+[![NSF-2132247](https://img.shields.io/badge/NSF-2132247-blue.svg)](https://nsf.gov/awardsearch/showAward?AWD_ID=2132247)
+
 This repo contains the scripts and instructions to reproduce the results of @gerard2021double. This involves simulations and real data analyses using the data from @shirasawa2017high (<http://sweetpotato-garden.kazusa.or.jp/>) and @delomas2021genotyping ([doi:10.5061/dryad.crjdfn33r](https://www.doi.org/10.5061/dryad.crjdfn33r)).
 
 ## Instructions
@@ -73,5 +75,9 @@ lapply(c("devtools",
 ```{r, echo = FALSE, comment=""}
 sessionInfo()
 ```
+
+## Acknowledgments
+
+This material is based upon work supported by the National Science Foundation under Grant No. [2132247](https://www.nsf.gov/awardsearch/showAward?AWD_ID=2132247). The opinions, findings, and conclusions or recommendations expressed are those of the author and do not necessarily reflect the views of the National Science Foundation.
 
 # References
