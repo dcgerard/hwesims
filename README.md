@@ -73,7 +73,7 @@ Make, wget, and 7-zip, running on a Linux system.
     [8] methods   base     
 
     other attached packages:
-     [1] updog_2.1.0                 future_1.22.1              
+     [1] updog_2.1.1                 future_1.22.1              
      [3] VariantAnnotation_1.38.0    Rsamtools_2.8.0            
      [5] Biostrings_2.60.2           XVector_0.32.0             
      [7] SummarizedExperiment_1.22.0 Biobase_2.52.0             
@@ -81,7 +81,7 @@ Make, wget, and 7-zip, running on a Linux system.
     [11] IRanges_2.26.0              S4Vectors_0.30.0           
     [13] MatrixGenerics_1.4.3        matrixStats_0.61.0         
     [15] BiocGenerics_0.38.0         BiocManager_1.30.16        
-    [17] phwelike_0.0.0.9000         hwep_0.0.1                 
+    [17] phwelike_1.0.0              hwep_0.0.1                 
     [19] latex2exp_0.5.0             ggthemes_4.2.4             
     [21] forcats_0.5.1               stringr_1.4.0              
     [23] dplyr_1.0.7                 purrr_0.3.4                
@@ -92,7 +92,7 @@ Make, wget, and 7-zip, running on a Linux system.
 
     loaded via a namespace (and not attached):
       [1] readxl_1.3.1             backports_1.2.1          BiocFileCache_2.0.0     
-      [4] BiocParallel_1.26.2      listenv_0.8.0            digest_0.6.27           
+      [4] BiocParallel_1.26.2      listenv_0.8.0            digest_0.6.28           
       [7] foreach_1.5.1            htmltools_0.5.2          fansi_0.5.0             
      [10] magrittr_2.0.1           memoise_2.0.0            BSgenome_1.60.0         
      [13] tzdb_0.1.2               remotes_2.4.0            globals_0.14.0          
@@ -119,7 +119,7 @@ Make, wget, and 7-zip, running on a Linux system.
      [76] reprex_2.0.1             stringi_1.7.4            ps_1.6.0                
      [79] GenomicFeatures_1.44.2   desc_1.3.0               lattice_0.20-44         
      [82] Matrix_1.3-4             vctrs_0.3.8              pillar_1.6.2            
-     [85] lifecycle_1.0.0          bitops_1.0-7             rtracklayer_1.52.1      
+     [85] lifecycle_1.0.1          bitops_1.0-7             rtracklayer_1.52.1      
      [88] R6_2.5.1                 BiocIO_1.2.0             parallelly_1.28.1       
      [91] sessioninfo_1.1.1        codetools_0.2-18         assertthat_0.2.1        
      [94] pkgload_1.2.2            rprojroot_2.0.2          rjson_0.2.20            
@@ -143,10 +143,10 @@ National Science Foundation.
 <div id="ref-delomas2021genotyping" class="csl-entry">
 
 Delomas, Thomas A., Stuart C. Willis, Blaine L. Parker, Donella Miller,
-Paul Anders, Andrea Schreier, and Shawn Narum. 2021. “Genotyping SNPs
-and Inferring Ploidy by Amplicon Sequencing for Polyploid,
-Ploidy-Variable Organisms.” *Molecular Ecology Resources*, In Press.
-<https://doi.org/10.1111/1755-0998.13431>.
+Paul Anders, Andrea Schreier, and Shawn Narum. 2021. “Genotyping Single
+Nucleotide Polymorphisms and Inferring Ploidy by Amplicon Sequencing for
+Polyploid, Ploidy-Variable Organisms.” *Molecular Ecology Resources* 21
+(7): 2288–98. <https://doi.org/10.1111/1755-0998.13431>.
 
 </div>
 
