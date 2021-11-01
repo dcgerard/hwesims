@@ -103,7 +103,7 @@ ggplot() +
            y = c(0.2, 0.7),
            label = c(expression(alpha>1/6),
                      expression(alpha<0))) +
-  geom_line(data = nodr_df, aes(x = x, y = y), lwd = 2, lty = 2) +
+  geom_line(data = nodr_df, aes(x = x, y = y), lwd = 1, lty = 2) +
   scale_fill_grey(start = 0.25, end = 0.75) +
   labs(fill = expression(alpha)) ->
   pl
