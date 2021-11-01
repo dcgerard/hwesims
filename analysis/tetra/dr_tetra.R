@@ -84,3 +84,32 @@ ggsave(filename = "./output/tetra/iso_dr.pdf",
        width = 6,
        height = 3.3,
        family = "Times")
+
+## Grey-scale version
+ggplot() +
+  geom_polygon(mapping = aes(x = x, y = y),
+               data = data.frame(x = c(-1, 0, 1, -1),
+                                 y = c(0, 1, 0, 0)),
+               fill = "white",
+               color = "black") +
+  geom_contour_filled(data = simdf, mapping = aes(x = x, y = y, z = alpha), bins = 3) +
+  theme_void() +
+  annotate(geom = "text",
+           x = c(-1 - nudge, 0, 1 + nudge),
+           y = c(0, 1 + 0.03, 0),
+           label = c("(1,0,0)", "(0,1,0)", "(0,0,1)")) +
+  annotate(geom = "text",
+           x = c(0, 0),
+           y = c(0.2, 0.7),
+           label = c(expression(alpha>1/6),
+                     expression(alpha<0))) +
+  geom_line(data = nodr_df, aes(x = x, y = y), lwd = 2, lty = 2) +
+  scale_fill_grey(start = 0.25, end = 0.75) +
+  labs(fill = expression(alpha)) ->
+  pl
+
+ggsave(filename = "./output/tetra/iso_dr_bw.pdf",
+       plot = pl,
+       width = 6,
+       height = 3.3,
+       family = "Times")
