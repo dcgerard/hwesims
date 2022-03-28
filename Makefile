@@ -81,7 +81,7 @@ sturg_plots = ./output/sturg/sturg_hist.pdf \
 boot_plots = ./output/boot/boot_qq.pdf
 
 .PHONY : all
-all : tetra sims sturg shir boot uncert
+all : tetra sims sturg shir boot uncert f1sims
 
 # Analyses to highlight difficulty in tetraploids
 .PHONY : tetra
@@ -226,3 +226,12 @@ uncert : ./output/uncert/uncert_hist.pdf
 	mkdir -p ./output/rout
 	mkdir -p ./output/uncert
 	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
+
+## F1 simulations to estimate double reduction
+.PHONY : f1sims
+f1sims: ./output/f1sims/f1simsout.csv
+
+./output/f1sims/f1simsout.csv : ./analysis/f1sims/f1sims.R
+	mkdir -p ./output/rout
+	mkdir -p ./output/f1sims
+	$(rexec) '--args nc=$(nc)' $< ./output/rout/$(basename $(notdir $<)).Rout

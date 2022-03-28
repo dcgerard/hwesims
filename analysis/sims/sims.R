@@ -72,7 +72,7 @@ for (i in seq_len(nrow(paramdf))) {
   nmat <- t(stats::rmultinom(n = nreps, size = nind, prob = freq$q))
 
   ## Fit hwep ----
-  thresh_l <- ifelse(niter == 1, 0, 1)
+  thresh_l <- 5
   future::plan(future::multisession, workers = nc)
   hout <- hwep::hwefit(nmat = nmat, type = "ustat", thresh = thresh_l)
   future::plan(future::sequential)
@@ -109,7 +109,7 @@ for (i in seq_len(nrow(paramdf))) {
   hkeep <- cbind(hkeep, rmkeep)
 
   ## Fit likelihood approach ----
-  thresh_l <- ifelse(niter == 1, 0, 1)
+  thresh_l <- 5
   future::plan(future::multisession, workers = nc)
   lout <- hwefit(nmat = nmat, type = "mle", thresh = thresh_l)
   future::plan(future::sequential)
