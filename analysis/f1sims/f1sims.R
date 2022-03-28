@@ -25,7 +25,7 @@ if (length(args) == 0) {
 cat(nc, "\n")
 
 ## Set up simulation parameters ----
-nreps <- 1
+nreps <- 1000
 paramdf <- expand.grid(ploidy = c(4, 6, 8),
                        nind = c(25, 100, 1000),
                        dr_ratio = c(0, 0.5, 1),
@@ -45,13 +45,13 @@ sout <- foreach(i = seq_len(nrow(paramdf)),
   ## Assume ploidy > 2
   alpha <- hwep::drbounds(ploidy = ploidy) * paramdf$dr_ratio[[i]]
 
-  freq <- zygdist(alpha = alpha, G1 = 2, G2 = 2, ploidy = ploidy)
+  freq <- zygdist(alpha = alpha, G1 = ploidy / 2, G2 = ploidy / 2, ploidy = ploidy)
 
   ## Simulate counts ----
   nvec <- c(stats::rmultinom(n = 1, size = nind, prob = freq))
 
   ## Estimate dr
-  fout <- f1dr(nvec = nvec, G1 = 2, G2 = 2)
+  fout <- f1dr(nvec = nvec, G1 = ploidy / 2, G2 = ploidy / 2)
 
   df <- data.frame(true_alpha1 = alpha[[1]],
                    true_alpha2 = NA_real_,
