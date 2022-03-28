@@ -229,14 +229,14 @@ uncert : ./output/uncert/uncert_hist.pdf
 
 ## F1 simulations to estimate double reduction
 .PHONY : f1sims
-f1sims: ./output/f1sims/f1simsout.csv
+f1sims: ./output/f1sims/f1_dr_box.pdf
 
 ./output/f1sims/f1simsout.csv : ./analysis/f1sims/f1sims.R
 	mkdir -p ./output/rout
 	mkdir -p ./output/f1sims
 	$(rexec) '--args nc=$(nc)' $< ./output/rout/$(basename $(notdir $<)).Rout
 
-./output/f1sims/f1_dr_box.pdf : ./analysis/f1plots.R ./output/f1sims/f1simsout.csv ./output/sims/simdf.csv
+./output/f1sims/f1_dr_box.pdf : ./analysis/f1sims/f1plots.R ./output/f1sims/f1simsout.csv ./output/sims/simdf.csv
 	mkdir -p ./output/rout
 	mkdir -p ./output/f1sims
 	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
