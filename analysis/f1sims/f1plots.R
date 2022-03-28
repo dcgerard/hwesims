@@ -1,5 +1,6 @@
 library(tidyverse)
 library(ggthemes)
+library(latex2exp)
 
 f1df <- read_csv("./output/f1sims/f1simsout.csv")
 hwdf <- read_csv("./output/sims/simdf.csv")
@@ -37,3 +38,21 @@ df %>%
   pl
 
 ggsave(filename = "./output/f1sims/f1_dr_box.pdf", plot = pl, height = 6, width = 6, family = "Times")
+
+## mse
+df %>%
+  left_join(dr_df) %>%
+  group_by(ploidy, nind, dr_ratio, type) %>%
+  summarise(mse100 = mean((alpha - true_alpha1)^2)*100) %>%
+  ungroup() %>%
+  ggplot(aes(x = nind, y = mse100, color = type)) +
+  facet_grid(ploidy ~ dr_ratio) +
+  geom_line() +
+  theme_bw() +
+  theme(strip.background = element_rect(fill = "white")) +
+  scale_color_colorblind(name = "Method") +
+  scale_y_log10(name = TeX("MSE $\\times$ 100$")) +
+  scale_x_log10(name = "Sample Size", breaks = c(25, 100, 1000)) ->
+  pl
+
+ggsave(filename = "./output/f1sims/f1_mse.pdf", plot = pl, height = 6, width = 6, family = "Times")
