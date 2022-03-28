@@ -4,7 +4,7 @@
 # parallelization. This could also be specified automatically using
 # environment variables. For example, in SLURM, SLURM_CPUS_PER_TASK
 # specifies the number of CPUs allocated for each task.
-nc = 10
+nc = 6
 
 # R scripting front-end. Note that makeCluster sometimes fails to
 # connect to a socker when using Rscript, so we are using the "R CMD
@@ -20,10 +20,24 @@ simplots_dr = ./output/sims/alphahat_dr0.pdf \
               ./output/sims/alphahat_dr100.pdf
 
 ## Plots checking distributional assumptions of p-values
-simplots_qq = ./output/sims/qq_nind100.pdf \
-              ./output/sims/qq_nind1000.pdf \
-              ./output/sims/qq_ll_nind100.pdf \
-              ./output/sims/qq_ll_nind1000.pdf
+simplots_qq = ./output/sims/qq_ll_nind100_dr0.pdf \
+              ./output/sims/qq_ll_nind100_dr100.pdf \
+              ./output/sims/qq_ll_nind100_dr50.pdf \
+              ./output/sims/qq_ll_nind1000_dr0.pdf \
+              ./output/sims/qq_ll_nind1000_dr100.pdf \
+              ./output/sims/qq_ll_nind1000_dr50.pdf \
+              ./output/sims/qq_ll_nind25_dr0.pdf \
+              ./output/sims/qq_ll_nind25_dr100.pdf \
+              ./output/sims/qq_ll_nind25_dr50.pdf \
+              ./output/sims/qq_nind100_dr0.pdf \
+              ./output/sims/qq_nind100_dr100.pdf \
+              ./output/sims/qq_nind100_dr50.pdf \
+              ./output/sims/qq_nind1000_dr0.pdf \
+              ./output/sims/qq_nind1000_dr100.pdf \
+              ./output/sims/qq_nind1000_dr50.pdf \
+              ./output/sims/qq_nind25_dr0.pdf \
+              ./output/sims/qq_nind25_dr100.pdf \
+              ./output/sims/qq_nind25_dr50.pdf
 
 ## Plots on Type I error and power from simulations
 simplots_pw = ./output/sims/power100.pdf \
