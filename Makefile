@@ -52,6 +52,10 @@ simplots_rm = ./output/sims/rm_t1e100.pdf \
 ## Inferred alpha plots
 simplots_in = ./output/sims/inferred_alpha.pdf
 
+## F1 Simulation Plots
+f1simplots = ./output/f1sims/f1_dr_box.pdf \
+             ./output/f1sims/f1_mse.pdf
+
 ## read-counts used from Shirasawa et al (2017)
 count_shir = ./output/shir/shir_size.csv \
              ./output/shir/shir_ref.csv
@@ -229,14 +233,14 @@ uncert : ./output/uncert/uncert_hist.pdf
 
 ## F1 simulations to estimate double reduction
 .PHONY : f1sims
-f1sims: ./output/f1sims/f1_dr_box.pdf
+f1sims: $(f1simplots)
 
 ./output/f1sims/f1simsout.csv : ./analysis/f1sims/f1sims.R
 	mkdir -p ./output/rout
 	mkdir -p ./output/f1sims
 	$(rexec) '--args nc=$(nc)' $< ./output/rout/$(basename $(notdir $<)).Rout
 
-./output/f1sims/f1_dr_box.pdf : ./analysis/f1sims/f1plots.R ./output/f1sims/f1simsout.csv ./output/sims/simdf.csv
+$(f1simplots) : ./analysis/f1sims/f1plots.R ./output/f1sims/f1simsout.csv ./output/sims/simdf.csv
 	mkdir -p ./output/rout
 	mkdir -p ./output/f1sims
 	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout

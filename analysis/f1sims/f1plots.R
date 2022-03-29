@@ -45,14 +45,20 @@ df %>%
   group_by(ploidy, nind, dr_ratio, type) %>%
   summarise(mse100 = mean((alpha - true_alpha1)^2)*100) %>%
   ungroup() %>%
-  ggplot(aes(x = nind, y = mse100, color = type)) +
+  spread(key = type, value = mse100) %>%
+  mutate(`HWE\nLikelihood` = `HWE\nLikelihood` / `F1 Likelihood`,
+         `HWE\nU-statistic` = `HWE\nU-statistic` / `F1 Likelihood`) %>%
+  select(-`F1 Likelihood`) %>%
+  gather(`HWE\nLikelihood`, `HWE\nU-statistic`, key = "type", value = "mseratio") %>%
+  ggplot(aes(x = nind, y = mseratio, color = type)) +
   facet_grid(ploidy ~ dr_ratio) +
   geom_line() +
   theme_bw() +
   theme(strip.background = element_rect(fill = "white")) +
   scale_color_colorblind(name = "Method") +
-  scale_y_log10(name = TeX("MSE $\\times$ 100$")) +
-  scale_x_log10(name = "Sample Size", breaks = c(25, 100, 1000)) ->
+  scale_x_log10(name = "Sample Size", breaks = c(25, 100, 1000)) +
+  geom_hline(yintercept = 1, lty = 2, col = 2) +
+  ylab("MSE Ratio") ->
   pl
 
 ggsave(filename = "./output/f1sims/f1_mse.pdf", plot = pl, height = 6, width = 6, family = "Times")
