@@ -79,13 +79,24 @@ sturg_n = ./output/sturg/nmat_updog.RDS \
 ## Final plots for sturgeon data
 sturg_plots = ./output/sturg/sturg_hist.pdf \
               ./output/sturg/sturg_qq.pdf \
-              ./output/sturg/sturg_weirdn.pdf
+              ./output/sturg/pvalue_pairs.pdf
 
 ## Bootstrap simulation plots
 boot_plots = ./output/boot/boot_qq.pdf
 
+## McAllister and Miller (2016) raw data
+raw_mcadat = ./data/mca/McAllister.Miller.all.mergedRefGuidedSNPs.vcf.gz \
+             ./data/mca/McAllister_Miller_Locality_Ploidy_Info.csv
+
+## McAllister and Miller (2016) filtered data
+filtered_mcadat = ./data/mca/mca_small.vcf
+
+## read-counts used from McAllister and Miller (2016)
+count_mcadat = ./output/mca/mca_refmat.csv \
+               ./output/mca/mca_sizemat.csv
+
 .PHONY : all
-all : tetra sims sturg shir boot uncert f1sims
+all : tetra sims sturg shir boot uncert f1sims intro mca
 
 # Analyses to highlight difficulty in tetraploids
 .PHONY : tetra
@@ -153,7 +164,7 @@ $(simplots_rm) : ./analysis/sims/sims_plots_rm.R ./output/sims/simdf.csv
 .PHONY : shir
 shir : $(figs_shir)
 
-./data/shir/KDRIsweetpotatoXushu18S1LG2017.vcf : 
+./data/shir/KDRIsweetpotatoXushu18S1LG2017.vcf :
 	mkdir -p ./data/shir
 	wget --directory-prefix=data/shir --no-clobber ftp://ftp.kazusa.or.jp/pub/sweetpotato/GeneticMap/KDRIsweetpotatoXushu18S1LG2017.vcf.gz
 	7z e ./data/shir/KDRIsweetpotatoXushu18S1LG2017.vcf.gz -o./data/shir
@@ -198,7 +209,12 @@ $(sturg_n) : ./analysis/sturg/sturg_nmat.R $(sturg_dat)
 	mkdir -p ./output/sturg
 	$(rexec) '--args nc=$(nc)' $< ./output/rout/$(basename $(notdir $<)).Rout
 
-$(sturg_plots) : ./analysis/sturg/sturg_hwep.R $(sturg_n)
+./output/sturg/pdf.csv : ./analysis/sturg/sturg_hwep.R $(sturg_n)
+	mkdir -p ./output/rout
+	mkdir -p ./output/sturg
+	$(rexec) '--args nc=$(nc)' $< ./output/rout/$(basename $(notdir $<)).Rout
+
+$(sturg_plots) : ./analysis/sturg/sturg_plot.R ./output/sturg/pdf.csv
 	mkdir -p ./output/rout
 	mkdir -p ./output/sturg
 	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
@@ -243,4 +259,50 @@ f1sims: $(f1simplots)
 $(f1simplots) : ./analysis/f1sims/f1plots.R ./output/f1sims/f1simsout.csv ./output/sims/simdf.csv
 	mkdir -p ./output/rout
 	mkdir -p ./output/f1sims
+	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
+
+## Analyze McAllister and Miller (2016) data
+.PHONY : mca
+mca : ./output/mca/mca_nmat.csv
+
+$(raw_mcadat) :
+	mkdir -p ./data/mca
+	wget --directory-prefix=data/mca --no-clobber https://datadryad.org/stash/downloads/file_stream/9026
+	wget --directory-prefix=data/mca --no-clobber https://datadryad.org/stash/downloads/file_stream/9027
+	mv ./data/mca/9026 ./data/mca/McAllister.Miller.all.mergedRefGuidedSNPs.vcf.gz
+	mv ./data/mca/9027 ./data/mca/McAllister_Miller_Locality_Ploidy_Info.csv
+
+$(filtered_mcadat) : ./analysis/mca/mca_filter.R $(raw_mcadat)
+	mkdir -p ./output/rout
+	mkdir -p ./data/mca
+	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
+
+$(count_mcadat) : ./analysis/mca/mca_extract.R $(filtered_mcadat)
+	mkdir -p ./output/rout
+	mkdir -p ./output/mca
+	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
+
+./output/mca/mca_updog.RDS : ./analysis/mca/mca_updog.R $(count_mcadat)
+	mkdir -p ./output/rout
+	mkdir -p ./output/mca
+	$(rexec) '--args nc=$(nc)' $< ./output/rout/$(basename $(notdir $<)).Rout
+
+./output/mca/mca_nmat.csv : ./analysis/mca/mca_geno.R ./output/mca/mca_updog.RDS
+	mkdir -p ./output/rout
+	mkdir -p ./output/mca
+	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
+
+## More extensive null simulations for main manuscript
+
+.PHONY : intro
+intro : ./output/intro/t1e.pdf
+
+./output/intro/null_sims.RDS : ./analysis/intro/t1e.R
+	mkdir -p ./output/rout
+	mkdir -p ./output/intro
+	$(rexec) '--args nc=$(nc)' $< ./output/rout/$(basename $(notdir $<)).Rout
+
+./output/intro/t1e.pdf : ./analysis/intro/t1e_plot.R ./output/intro/null_sims.RDS
+	mkdir -p ./output/rout
+	mkdir -p ./output/intro
 	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
