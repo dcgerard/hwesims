@@ -191,7 +191,7 @@ $(figs_shir) : ./analysis/shir/shir_hwep.R ./output/shir/shir_nmat.csv
 
 ## Data analysis of Sturgeon data from Delomas et al (2021)
 .PHONY : sturg
-sturg : $(sturg_plots)
+sturg : $(sturg_plots) ./output/sturg/chisq_stats.pdf
 
 $(sturg_dat) :
 	mkdir -p ./data/sturg
@@ -215,6 +215,11 @@ $(sturg_n) : ./analysis/sturg/sturg_nmat.R $(sturg_dat)
 	$(rexec) '--args nc=$(nc)' $< ./output/rout/$(basename $(notdir $<)).Rout
 
 $(sturg_plots) : ./analysis/sturg/sturg_plot.R ./output/sturg/pdf.csv
+	mkdir -p ./output/rout
+	mkdir -p ./output/sturg
+	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
+
+./output/sturg/chisq_stats.pdf : ./analysis/sturg/sturg_intuit.R ./output/sturg/pdf.csv
 	mkdir -p ./output/rout
 	mkdir -p ./output/sturg
 	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout

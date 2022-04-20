@@ -123,3 +123,16 @@ ggsave(filename = "./output/sturg/pvalue_pairs.pdf",
        height = 6,
        width = 6,
        family = "Times")
+
+## Count above/below 0.01
+pdf %>%
+  select(-`Random Mating`) %>%
+  gather(-`No DR`, key = "method", value = "p-value") %>%
+  group_by(method) %>%
+  summarize(n_no_more = sum(`p-value` > 0.05 & `No DR` < 0.05, na.rm = TRUE),
+            n_no_less = sum(`p-value` < 0.05 & `No DR` > 0.05, na.rm = TRUE))
+
+
+
+
+
