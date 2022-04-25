@@ -38,10 +38,15 @@ plan(multisession, workers = nc)
 rout <- hwefit(nmat = round(nmat), type = "rm")
 plan("sequential")
 
+sp <- seq(0, 40, by = 3)
 tibble(MLE = lout$p_hwe, `U-stat` = hout$p_hwe, `No DR` = dout$p_hwe) %>%
   gather(key = "Method", value = "P-value") %>%
+  mutate(`P-value` = -log10(`P-value`),
+         Method = parse_factor(Method,
+                               levels = c("No DR", "MLE", "U-stat"))) %>%
   ggplot(aes(x = Method, y = `P-value`)) +
-  geom_boxplot(outlier.size = 0.1) +
+  geom_boxplot(outlier.size = 0.5) +
+  scale_y_continuous(name = "Observed p-values", breaks = sp, labels = 10^(-sp), minor_breaks = NULL) +
   theme_bw() ->
   pl
 
