@@ -84,19 +84,8 @@ sturg_plots = ./output/sturg/sturg_hist.pdf \
 ## Bootstrap simulation plots
 boot_plots = ./output/boot/boot_qq.pdf
 
-## McAllister and Miller (2016) raw data
-raw_mcadat = ./data/mca/McAllister.Miller.all.mergedRefGuidedSNPs.vcf.gz \
-             ./data/mca/McAllister_Miller_Locality_Ploidy_Info.csv
-
-## McAllister and Miller (2016) filtered data
-filtered_mcadat = ./data/mca/mca_small.vcf
-
-## read-counts used from McAllister and Miller (2016)
-count_mcadat = ./output/mca/mca_refmat.csv \
-               ./output/mca/mca_sizemat.csv
-
 .PHONY : all
-all : tetra sims sturg shir boot uncert f1sims intro mca
+all : tetra sims sturg shir boot uncert f1sims intro
 
 # Analyses to highlight difficulty in tetraploids
 .PHONY : tetra
@@ -176,7 +165,7 @@ $(count_shir) : ./analysis/shir/shir_filter.R ./data/shir/KDRIsweetpotatoXushu18
 
 ./output/shir/shir_updog.RDS : ./analysis/shir/shir_updog.R $(count_shir)
 	mkdir -p ./output/rout
-	mkdir -p ./output/mca
+	mkdir -p ./output/shir
 	$(rexec) '--args nc=$(nc)' $< ./output/rout/$(basename $(notdir $<)).Rout
 
 ./output/shir/shir_nmat.csv : ./analysis/shir/shir_geno.R ./output/shir/shir_updog.RDS
@@ -264,37 +253,6 @@ f1sims: $(f1simplots)
 $(f1simplots) : ./analysis/f1sims/f1plots.R ./output/f1sims/f1simsout.csv ./output/sims/simdf.csv
 	mkdir -p ./output/rout
 	mkdir -p ./output/f1sims
-	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
-
-## Analyze McAllister and Miller (2016) data
-.PHONY : mca
-mca : ./output/mca/mca_nmat.csv
-
-$(raw_mcadat) :
-	mkdir -p ./data/mca
-	wget --directory-prefix=data/mca --no-clobber https://datadryad.org/stash/downloads/file_stream/9026
-	wget --directory-prefix=data/mca --no-clobber https://datadryad.org/stash/downloads/file_stream/9027
-	mv ./data/mca/9026 ./data/mca/McAllister.Miller.all.mergedRefGuidedSNPs.vcf.gz
-	mv ./data/mca/9027 ./data/mca/McAllister_Miller_Locality_Ploidy_Info.csv
-
-$(filtered_mcadat) : ./analysis/mca/mca_filter.R $(raw_mcadat)
-	mkdir -p ./output/rout
-	mkdir -p ./data/mca
-	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
-
-$(count_mcadat) : ./analysis/mca/mca_extract.R $(filtered_mcadat)
-	mkdir -p ./output/rout
-	mkdir -p ./output/mca
-	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
-
-./output/mca/mca_updog.RDS : ./analysis/mca/mca_updog.R $(count_mcadat)
-	mkdir -p ./output/rout
-	mkdir -p ./output/mca
-	$(rexec) '--args nc=$(nc)' $< ./output/rout/$(basename $(notdir $<)).Rout
-
-./output/mca/mca_nmat.csv : ./analysis/mca/mca_geno.R ./output/mca/mca_updog.RDS
-	mkdir -p ./output/rout
-	mkdir -p ./output/mca
 	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
 
 ## More extensive null simulations for main manuscript
