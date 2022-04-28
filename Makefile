@@ -39,6 +39,9 @@ simplots_qq = ./output/sims/qq_ll_nind100_dr0.pdf \
               ./output/sims/qq_nind25_dr100.pdf \
               ./output/sims/qq_nind25_dr50.pdf
 
+simplots_qq_orig = ./output/sims/orig/orig_qq_ll_nind25_dr0.pdf \
+                   ./output/sims/orig/orig_qq_nind1000_dr100.pdf
+
 ## Plots on Type I error and power from simulations
 simplots_pw = ./output/sims/power100.pdf \
               ./output/sims/power1000.pdf \
@@ -116,7 +119,7 @@ tetra : ./output/tetra/iso_dr.pdf \
 
 # Simulation study
 .PHONY : sims
-sims : $(simplots_qq) $(simplots_dr) $(simplots_pw) $(simplots_in) $(simplots_rm)
+sims : $(simplots_qq) $(simplots_dr) $(simplots_pw) $(simplots_in) $(simplots_rm) $(simplots_qq_orig)
 
 ./output/sims/simdf.csv : ./analysis/sims/sims.R
 	mkdir -p ./output/rout
@@ -147,6 +150,11 @@ $(simplots_in) : ./analysis/sims/sims_plots_inferred.R ./output/sims/simdf.csv
 $(simplots_rm) : ./analysis/sims/sims_plots_rm.R ./output/sims/simdf.csv
 	mkdir -p ./output/rout
 	mkdir -p ./output/sims
+	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
+
+$(simplots_qq_orig) : ./analysis/sims/sims_plots_qq_original_scale.R ./output/sims/simdf.csv
+	mkdir -p ./output/rout
+	mkdir -p ./output/sims/orig
 	$(rexec) $< ./output/rout/$(basename $(notdir $<)).Rout
 
 ## Data analysis using Shirasawa data
