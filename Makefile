@@ -4,7 +4,7 @@
 # parallelization. This could also be specified automatically using
 # environment variables. For example, in SLURM, SLURM_CPUS_PER_TASK
 # specifies the number of CPUs allocated for each task.
-nc = 6
+nc = 10
 
 # R scripting front-end. Note that makeCluster sometimes fails to
 # connect to a socker when using Rscript, so we are using the "R CMD
