@@ -1,6 +1,7 @@
 library(tidyverse)
 library(hwep)
 library(latex2exp)
+library(ggthemes)
 
 sdf <- readRDS(file = "output/intro/null_sims.RDS")
 
@@ -19,19 +20,37 @@ sdf %>%
                          "p_like" = "Likelihood",
                          "p_u" = "U-statistic",
                          "p_naive" = "Naive"),
-         method = parse_factor(method, levels = c("Naive", "U-statistic", "Likelihood"))) %>%
+         method = parse_factor(method, levels = c("Naive", "U-statistic", "Likelihood"))) ->
+  df
+
+df %>%
   ggplot(aes(x = alpha_val, y = t1e, color = method)) +
   facet_grid(af ~ ploidy, scales = "free_x") +
   geom_point(size = 0.5) +
+  geom_hline(yintercept = level, lty = 2, color = "red") +
   geom_line() +
   theme_bw() +
   xlab(TeX("Double Reduction Rate, $\\alpha_1$")) +
   ylab("Type I Error") +
-  scale_color_manual(values = c("#ED193A", "#004FA2", "#808080"), name = "Method") +
-  geom_hline(yintercept = level, lty = 2, color = "#E08229") +
+  scale_color_colorblind(name = "Method") +
   ylim(0, 1) +
   theme(strip.background = element_rect(fill = "white")) ->
   pl
 
 ggsave(filename = "./output/intro/t1e.pdf", plot = pl, width = 6, height = 4, family = "Times")
 ggsave(filename = "./output/intro/t1e.png", plot = pl, width = 6, height = 4)
+
+df %>%
+  ggplot(aes(x = alpha_val, y = t1e, color = method)) +
+  facet_grid(af ~ ploidy, scales = "free_x") +
+  geom_hline(yintercept = level, lty = 2) +
+  geom_line() +
+  theme_bw() +
+  xlab(TeX("Double Reduction Rate, $\\alpha_1$")) +
+  ylab("Type I Error") +
+  scale_color_grey(name = "Method", end = 0.6, start = 0) +
+  ylim(0, 1) +
+  theme(strip.background = element_rect(fill = "white")) ->
+  pl
+
+ggsave(filename = "./output/intro/t1e_bw.pdf", plot = pl, width = 6, height = 4, family = "Times")
