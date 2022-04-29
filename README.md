@@ -49,9 +49,8 @@ Make, wget, and 7-zip, running on a Linux system.
 -   [hex_equi.nb](./analysis/hex_equi.nb) is a Mathematica notebook that
     calculates gamete frequencies at equilibrium for hexaploids.
 -   [diploid.nb](./analysis/diploid.nb) is a Mathematica notebook that
-    explores the
-    ![U](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;U "U")-statistic
-    approach to testing for equilibrium in diploids.
+    explores the U-statistic approach to testing for equilibrium in
+    diploids.
 
 ## Session Information
 
