@@ -85,7 +85,10 @@ pdf_sub %>%
   unnest_longer(chisq) %>%
   mutate(chisq_id = paste0("k = ", chisq_id),
          ustat = round(ustat, digits = 2),
-         naive = round(naive, digits = 2)) %>%
+         naive = round(naive, digits = 2)) ->
+  df
+
+df %>%
   ggplot(aes(x = y, y = chisq, color = Method)) +
   facet_wrap(.~chisq_id) +
   geom_point(size = 1) +
@@ -97,6 +100,23 @@ pdf_sub %>%
   pl
 
 ggsave(filename = "./output/sturg/chisq_stats.pdf",
+       plot = pl,
+       height = 4,
+       width = 6,
+       family = "Times")
+
+df %>%
+  ggplot(aes(x = y, y = chisq, pch = Method)) +
+  facet_wrap(.~chisq_id) +
+  geom_point(size = 1) +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 6),
+        strip.background = element_rect(fill = "white")) +
+  scale_color_colorblind() +
+  ylab(TeX("$\\frac{(y_{k} - \\hat{q}_{k}n)^2}{\\hat{q}_{k}n}$")) ->
+  pl
+
+ggsave(filename = "./output/sturg/chisq_stats_bw.pdf",
        plot = pl,
        height = 4,
        width = 6,
