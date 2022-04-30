@@ -30,7 +30,7 @@ nreps <- 1000 ## number of replications
 paramdf <- paramdf[!(paramdf$ploidy == 2 & paramdf$dr_ratio > 0), ]
 
 ## Add parameters to fill in ----
-paramdf$seed <- seq_len(nrow(paramdf))
+paramdf$seed <- rev(seq_len(nrow(paramdf)))
 paramdf$simout <- vector(mode = "list", length = nrow(paramdf))
 paramdf$true_alpha <- vector(mode = "list", length = nrow(paramdf))
 paramdf$inferred_alpha <- NA_real_ ## only applicable to tetraploids
@@ -72,7 +72,7 @@ for (i in seq_len(nrow(paramdf))) {
   nmat <- t(stats::rmultinom(n = nreps, size = nind, prob = freq$q))
 
   ## Fit hwep ----
-  thresh_l <- 5
+  thresh_l <- max(paramdf$nind[[i]] * 0.01, 5)
   future::plan(future::multisession, workers = nc)
   hout <- hwep::hwefit(nmat = nmat, type = "ustat", thresh = thresh_l)
   future::plan(future::sequential)
