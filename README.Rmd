@@ -34,7 +34,8 @@ To run these scripts, you will need to have the latest version of R, GNU Make, w
                        "latex2exp",
                        "BiocManager",
                        "future",
-                       "ggpmisc"))
+                       "ggpmisc",
+                       "GGally"))
     BiocManager::install("VariantAnnotation")
     devtools::install_github("dcgerard/hwep")
     devtools::install_github("dcgerard/phwelike")
@@ -70,7 +71,8 @@ lapply(c("devtools",
          "VariantAnnotation",
          "future",
          "updog",
-         "ggpmisc"), 
+         "ggpmisc",
+         "GGally"), 
        FUN = library,
        character.only = TRUE)
 ```
