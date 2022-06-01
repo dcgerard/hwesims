@@ -163,7 +163,7 @@ shir : $(figs_shir)
 
 ./data/shir/KDRIsweetpotatoXushu18S1LG2017.vcf :
 	mkdir -p ./data/shir
-	wget --directory-prefix=data/shir --no-clobber ftp://ftp.kazusa.or.jp/pub/sweetpotato/GeneticMap/KDRIsweetpotatoXushu18S1LG2017.vcf.gz
+	wget --directory-prefix=data/shir --no-clobber https://github.com/dcgerard/KDRIsweetpotatoXushu18S1LG2017/raw/main/KDRIsweetpotatoXushu18S1LG2017.vcf.gz
 	7z e ./data/shir/KDRIsweetpotatoXushu18S1LG2017.vcf.gz -o./data/shir
 
 $(count_shir) : ./analysis/shir/shir_filter.R ./data/shir/KDRIsweetpotatoXushu18S1LG2017.vcf
