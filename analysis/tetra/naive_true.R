@@ -50,7 +50,7 @@ pardf %>%
          ploidy = paste0("textstyle(ploidy) == ", ploidy)) %>%
   ggplot(aes(x = r, y = diff)) +
   facet_grid(dosage ~ ploidy, labeller = label_parsed) +
-  geom_hline(yintercept = 0, lty = 2, col = 2) +
+  geom_hline(yintercept = 0, lty = 2, col = 1) +
   geom_line() +
   theme_bw() +
   theme(strip.background = element_rect(fill = "white")) +

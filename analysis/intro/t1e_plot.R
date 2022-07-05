@@ -24,15 +24,16 @@ sdf %>%
   df
 
 df %>%
-  ggplot(aes(x = alpha_val, y = t1e, color = method)) +
+  rename(Method = method) %>%
+  ggplot(aes(x = alpha_val, y = t1e, color = Method, shape = Method)) +
   facet_grid(af ~ ploidy, scales = "free_x") +
-  geom_point(size = 0.5) +
+  geom_point() +
   geom_hline(yintercept = level, lty = 2, color = "red") +
   geom_line() +
   theme_bw() +
   xlab(TeX("Double Reduction Rate, $\\alpha_1$")) +
   ylab("Type I Error") +
-  scale_color_colorblind(name = "Method") +
+  scale_color_colorblind() +
   ylim(0, 1) +
   theme(strip.background = element_rect(fill = "white")) ->
   pl

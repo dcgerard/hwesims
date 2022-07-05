@@ -88,13 +88,13 @@ my_qq <- function(data, mapping, ...) {
 
   ggplot(data = data, mapping = mapping) +
     stat_ppoint() +
-    geom_abline(lty = 2, col = 2)
+    geom_abline(lty = 2, col = 1)
 }
 
 my_point <- function(data, mapping, ...) {
   ggplot(data = data, mapping = mapping) +
     geom_point(...) +
-    geom_abline(intercept = 0, slope = 1, lty = 2, col = 2)
+    geom_abline(intercept = 0, slope = 1, lty = 2, col = 1)
 }
 
 ggpairs(data = nl10df,

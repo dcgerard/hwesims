@@ -86,9 +86,9 @@ pdf_sub %>%
   df
 
 df %>%
-  ggplot(aes(x = y, y = chisq, color = Method)) +
+  ggplot(aes(x = y, y = chisq, color = Method, shape = Method)) +
   facet_wrap(.~chisq_id) +
-  geom_point(size = 1) +
+  geom_point(size = 1.5) +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 6),
         strip.background = element_rect(fill = "white")) +
