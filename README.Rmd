@@ -14,12 +14,12 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Reproduce the Analysis from @gerard2021double
+# Reproduce the Analysis from @gerard2022double
 
 [![NSF-2132247](https://img.shields.io/badge/NSF-2132247-blue.svg)](https://nsf.gov/awardsearch/showAward?AWD_ID=2132247)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5531872.svg)](https://doi.org/10.5281/zenodo.5531872)
 
-This repo contains the scripts and instructions to reproduce the results of @gerard2021double. This involves simulations and real data analyses using the data from @shirasawa2017high (<https://github.com/dcgerard/KDRIsweetpotatoXushu18S1LG2017>) and @delomas2021genotyping ([doi:10.5061/dryad.crjdfn33r](https://www.doi.org/10.5061/dryad.crjdfn33r)).
+This repo contains the scripts and instructions to reproduce the results of @gerard2022double. This involves simulations and real data analyses using the data from @shirasawa2017high (<https://github.com/dcgerard/KDRIsweetpotatoXushu18S1LG2017>) and @delomas2021genotyping ([doi:10.5061/dryad.crjdfn33r](https://www.doi.org/10.5061/dryad.crjdfn33r)).
 
 ## Instructions
 
@@ -42,7 +42,7 @@ To run these scripts, you will need to have the latest version of R, GNU Make, w
     devtools::install_github("dcgerard/updog")
     ```
     
-    The `{hwep}` package contains the new methods from @gerard2021double, while the `{phwelike}` package contains the code written by @jiang2021computational and placed in package form by me.
+    The `{hwep}` package contains the new methods from @gerard2022double, while the `{phwelike}` package contains the code written by @jiang2021computational and placed in package form by me.
 
 2. Run `make` in the terminal.
 
